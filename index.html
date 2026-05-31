@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Portfolio" />
+<meta name="theme-color" content="#0a0c10" />
 <title>Portfolio Terminal</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
@@ -25,82 +29,121 @@
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'IBM Plex Sans', sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; min-height: -webkit-fill-available; overscroll-behavior: none; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); padding-top: calc(16px + env(safe-area-inset-top)); }
 
-.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.logo { font-family: var(--mono); font-size: 13px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; }
+/* Header */
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.logo { font-family: var(--mono); font-size: 12px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; }
 .logo span { color: var(--dim); }
 .header-right { display: flex; align-items: center; gap: 10px; }
-.hide-btn { font-family: var(--mono); font-size: 11px; background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); padding: 6px 14px; border-radius: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.15s; }
-.hide-btn:hover { border-color: var(--green); color: var(--green); }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+.hide-btn { font-family: var(--mono); font-size: 11px; background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); padding: 8px 14px; border-radius: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.15s; min-height: 36px; }
+.hide-btn:active { border-color: var(--green); color: var(--green); }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; flex-shrink: 0; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-.balance-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 12px; }
+/* Balance */
+.balance-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 10px; }
 .bal-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
-.bal-amount { font-family: var(--mono); font-size: 38px; font-weight: 600; color: var(--text); line-height: 1; transition: filter 0.3s; }
+.bal-amount { font-family: var(--mono); font-size: 36px; font-weight: 600; color: var(--text); line-height: 1; transition: filter 0.3s; }
 .bal-amount.blurred, .blurred-val { filter: blur(7px); user-select: none; }
 
-.ticker-strip { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
-.ticker-inner { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
+/* Ticker */
+.ticker-strip { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.ticker-strip::-webkit-scrollbar { display: none; }
+.ticker-inner { display: flex; align-items: center; gap: 16px; white-space: nowrap; min-width: max-content; }
 .ticker-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 1px; flex-shrink: 0; }
-.ticker-items { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
-.t-item { display: flex; align-items: center; gap: 10px; }
+.ticker-items { display: flex; gap: 20px; align-items: center; }
+.t-item { display: flex; align-items: center; gap: 8px; }
 .t-sym { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--muted); }
 .t-price { font-family: var(--mono); font-size: 12px; color: var(--text); }
 .t-chg { font-family: var(--mono); font-size: 11px; padding: 2px 6px; border-radius: 3px; }
 .t-chg.up { color: var(--green); background: rgba(0,212,170,0.08); }
 .t-chg.dn { color: var(--red); background: rgba(255,77,106,0.08); }
 
-.cols { display: grid; grid-template-columns: 1fr 260px; gap: 12px; }
-@media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+/* Layout */
+.cols { display: grid; grid-template-columns: 1fr 240px; gap: 10px; }
 
-.holdings-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.card-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; padding: 14px 18px 10px; border-bottom: 1px solid var(--border); }
+/* Holdings card */
+.holdings-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.card-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; padding: 12px 16px 10px; border-bottom: 1px solid var(--border); }
+
+/* Desktop table */
 .holdings-table { width: 100%; border-collapse: collapse; }
-.holdings-table th { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 18px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg3); }
+.holdings-table th { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 16px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg3); }
 .holdings-table th:last-child, .holdings-table td:last-child { text-align: right; }
-.holdings-table td { padding: 10px 18px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.holdings-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .holdings-table tr:last-child td { border-bottom: none; }
-.holdings-table tr:hover td { background: var(--bg3); }
+
+/* Mobile cards (hidden on desktop) */
+.holding-cards { display: none; padding: 8px; }
+.holding-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+.holding-card:last-child { margin-bottom: 0; }
+.hc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.hc-sym { font-family: var(--mono); font-weight: 600; font-size: 16px; color: var(--text); }
+.hc-chg { font-family: var(--mono); font-size: 12px; margin-top: 2px; }
+.hc-value { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--text); text-align: right; }
+.hc-value-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; }
+.hc-bottom { display: flex; justify-content: space-between; align-items: center; }
+.hc-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.hc-alloc { display: flex; align-items: center; gap: 8px; }
+.hc-pct { font-family: var(--mono); font-size: 12px; }
+.hc-bar-track { width: 60px; height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+.hc-bar-fill { height: 100%; border-radius: 2px; }
+.hc-del { background: none; border: 1px solid var(--border2); color: var(--dim); cursor: pointer; font-size: 14px; padding: 6px 10px; border-radius: 6px; transition: all 0.15s; min-width: 36px; min-height: 36px; }
+.hc-del:active { color: var(--red); border-color: var(--red); }
+
 .sym-cell { display: flex; align-items: center; gap: 8px; }
 .sym-badge { font-family: var(--mono); font-weight: 600; font-size: 13px; color: var(--text); }
-.sym-name { font-size: 11px; color: var(--muted); }
+.sym-name { font-size: 11px; }
 .td-mono { font-family: var(--mono); font-size: 12px; }
-.td-price { color: var(--text); }
-.td-value { color: var(--text); font-weight: 500; }
-.td-shares { color: var(--muted); }
-.warn { color: var(--amber); font-size: 12px; margin-right: 4px; }
-.pct-bar-wrap { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.warn { color: var(--amber); font-size: 12px; margin-right: 3px; }
+.pct-bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .pct-bar { height: 3px; border-radius: 2px; background: var(--green); flex-shrink: 0; }
 .pct-bar.warn-bar { background: var(--amber); }
 .del-btn { background: none; border: none; color: var(--dim); cursor: pointer; font-size: 18px; padding: 2px 4px; border-radius: 3px; transition: color 0.15s; line-height: 1; }
 .del-btn:hover { color: var(--red); }
 
-.alloc-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.alloc-list { padding: 10px 0; }
-.alloc-item { padding: 9px 18px; }
+/* Allocation */
+.alloc-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.alloc-list { padding: 8px 0; }
+.alloc-item { padding: 8px 16px; }
 .alloc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 .alloc-sym { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); }
 .alloc-pct { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .alloc-track { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
 .alloc-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
 
-.add-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-top: 12px; }
+/* Add section */
+.add-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-top: 10px; }
 .add-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-bottom: 12px; }
 .add-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.add-row input { font-family: var(--mono); font-size: 12px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); padding: 7px 10px; border-radius: 4px; outline: none; transition: border-color 0.15s; }
+.add-row input { font-family: var(--mono); font-size: 14px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); padding: 10px 12px; border-radius: 6px; outline: none; transition: border-color 0.15s; min-height: 44px; }
 .add-row input:focus { border-color: var(--green); }
-.inp-sym { width: 80px; text-transform: uppercase; }
-.inp-shares { width: 90px; }
-.add-btn { font-family: var(--mono); font-size: 11px; background: rgba(0,212,170,0.1); border: 1px solid var(--green2); color: var(--green); padding: 7px 16px; border-radius: 4px; cursor: pointer; letter-spacing: 1px; white-space: nowrap; transition: all 0.15s; }
-.add-btn:hover { background: rgba(0,212,170,0.2); }
+.inp-sym { width: 90px; text-transform: uppercase; }
+.inp-shares { width: 110px; }
+.add-btn { font-family: var(--mono); font-size: 12px; background: rgba(0,212,170,0.1); border: 1px solid var(--green2); color: var(--green); padding: 10px 18px; border-radius: 6px; cursor: pointer; letter-spacing: 1px; white-space: nowrap; transition: all 0.15s; min-height: 44px; }
+.add-btn:active { background: rgba(0,212,170,0.25); }
 .add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .err-msg { font-family: var(--mono); font-size: 11px; color: var(--red); margin-top: 8px; min-height: 16px; }
-.loading-msg { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 8px 18px; }
-.empty-state { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 24px 18px; text-align: center; }
+.loading-msg { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 8px 16px; }
+.empty-state { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 24px 16px; text-align: center; }
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 640px) {
+  .bal-amount { font-size: 28px; }
+  .cols { grid-template-columns: 1fr; }
+  /* Swap table → cards on mobile */
+  .holdings-table, .holdings-table thead, .holdings-table tbody, .holdings-table tr { display: none; }
+  .holding-cards { display: block; }
+  /* Allocation below holdings on mobile */
+  .alloc-card { order: 2; }
+  .add-row { flex-direction: column; align-items: stretch; }
+  .inp-sym, .inp-shares { width: 100%; }
+  .add-btn { width: 100%; justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -133,6 +176,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); min-
   <div class="cols">
     <div class="holdings-card">
       <div class="card-title">Holdings</div>
+      <!-- Desktop table -->
       <table class="holdings-table">
         <thead>
           <tr>
@@ -143,7 +187,12 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); min-
           <tr><td colspan="6" class="empty-state">No holdings yet. Add your first position below.</td></tr>
         </tbody>
       </table>
+      <!-- Mobile cards -->
+      <div class="holding-cards" id="holdingCards">
+        <div class="empty-state">No holdings yet. Add your first position below.</div>
+      </div>
     </div>
+
     <div class="alloc-card">
       <div class="card-title">Allocation</div>
       <div class="alloc-list" id="allocList">
@@ -155,8 +204,8 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); min-
   <div class="add-section">
     <div class="add-title">ADD POSITION</div>
     <div class="add-row">
-      <input class="inp-sym" id="inpSym" type="text" placeholder="TICKER" maxlength="6" />
-      <input class="inp-shares" id="inpShares" type="number" placeholder="Shares" min="0.001" step="any" />
+      <input class="inp-sym" id="inpSym" type="text" placeholder="TICKER" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" />
+      <input class="inp-shares" id="inpShares" type="number" placeholder="Shares" min="0.001" step="any" inputmode="decimal" />
       <button class="add-btn" id="addBtn" onclick="addHolding()">+ ADD</button>
     </div>
     <div class="err-msg" id="errMsg"></div>
@@ -194,8 +243,7 @@ async function refreshAllPrices() {
 
 function renderTicker() {
   [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym]) => {
-    const d = prices[sym];
-    if (!d) return;
+    const d = prices[sym]; if (!d) return;
     document.getElementById(id+'Price').textContent = '$'+d.price.toFixed(2);
     const el = document.getElementById(id+'Chg');
     el.textContent = (d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
@@ -214,6 +262,7 @@ function renderAll() {
   balEl.textContent = '$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   balEl.className = 'bal-amount'+(blurred?' blurred':'');
   renderHoldings(total);
+  renderMobileCards(total);
   renderAlloc(total);
 }
 
@@ -227,12 +276,44 @@ function renderHoldings(total) {
     const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
     return `<tr>
       <td><div class="sym-cell"><span class="sym-badge">${h.sym}</span>${p?`<span class="sym-name" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}</div></td>
-      <td class="td-mono td-price${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'—'}</td>
-      <td class="td-mono td-shares">${h.shares.toLocaleString()}</td>
-      <td class="td-mono td-value${blurred?' blurred-val':''}">${valStr}</td>
-      <td><div class="pct-bar-wrap">${isWarn?'<span class="warn" title="Concentration > 50%">⚠</span>':''}<span class="td-mono" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:36px;text-align:right${blurred?';filter:blur(7px)':''}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div></div></td>
+      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'—'}</td>
+      <td class="td-mono" style="color:var(--muted)">${h.shares.toLocaleString()}</td>
+      <td class="td-mono${blurred?' blurred-val':''}" style="font-weight:500">${valStr}</td>
+      <td><div class="pct-bar-wrap">${isWarn?'<span class="warn">⚠</span>':''}<span class="td-mono" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:34px;text-align:right${blurred?';filter:blur(7px)':''}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div></div></td>
       <td><button class="del-btn" onclick="deleteHolding('${h.id}')">×</button></td>
     </tr>`;
+  }).join('');
+}
+
+function renderMobileCards(total) {
+  const container = document.getElementById('holdingCards');
+  if (!holdings.length) { container.innerHTML='<div class="empty-state">No holdings yet. Add your first position below.</div>'; return; }
+  const colors = ['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
+  const sorted = [...holdings].sort((a,b)=>{ const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0; return bv-av; });
+  container.innerHTML = sorted.map((h,i) => {
+    const p=prices[h.sym], val=p?p.price*h.shares:null, pct=val&&total>0?(val/total)*100:0, isWarn=pct>50;
+    const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+    const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
+    const barColor=isWarn?'var(--amber)':colors[i%colors.length];
+    return `<div class="holding-card">
+      <div class="hc-top">
+        <div>
+          <div class="hc-sym">${h.sym} ${isWarn?'<span style="color:var(--amber);font-size:13px">⚠</span>':''}</div>
+          ${p?`<div class="hc-chg" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}% &nbsp;$${p.price.toFixed(2)}</div>`:''}
+        </div>
+        <div>
+          <div class="hc-value${blurred?' blurred-val':''}">${valStr}</div>
+          <div class="hc-value-label">${h.shares.toLocaleString()} shares</div>
+        </div>
+      </div>
+      <div class="hc-bottom">
+        <div class="hc-alloc">
+          <span class="hc-pct${blurred?' blurred-val':''}" style="color:${isWarn?'var(--amber)':'var(--muted)'}">${val!==null?pct.toFixed(1)+'%':'—'}</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div></div>
+        </div>
+        <button class="hc-del" onclick="deleteHolding('${h.id}')">×</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
