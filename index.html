@@ -8,12 +8,11 @@
 <meta name="apple-mobile-web-app-title" content="Portfolio" />
 <meta name="theme-color" content="#0a0c10" />
 <title>Portfolio Terminal</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 :root {
   --bg:#0a0c10;--bg2:#111418;--bg3:#181c22;--border:#1e2530;--border2:#2a3340;
-  --green:#00d4aa;--green2:#00a882;--red:#ff4d6a;--amber:#f5a623;--blue:#4d9fff;
+  --green:#00d4aa;--green2:#00a882;--red:#ff4d6a;--amber:#f5a623;
   --text:#e8edf4;--muted:#6b7a8d;--dim:#3a4454;
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
 }
@@ -21,7 +20,7 @@
 html{-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overscroll-behavior:none;}
 
-/* Login screen */
+/* Login */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
 .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px 32px;width:100%;max-width:360px;}
 .login-logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
@@ -31,7 +30,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .login-input:focus{border-color:var(--green);}
 .login-btn{width:100%;font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:12px;border-radius:6px;cursor:pointer;letter-spacing:2px;transition:all 0.15s;text-transform:uppercase;}
 .login-btn:hover{background:rgba(0,212,170,0.2);}
-.login-btn:active{background:rgba(0,212,170,0.3);}
 .login-err{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:10px;min-height:16px;text-align:center;}
 .login-attempts{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:16px;text-align:center;}
 #loginScreen.hidden{display:none;}
@@ -44,22 +42,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;}
 .logo span{color:var(--dim);}
 .header-right{display:flex;align-items:center;gap:10px;}
-.hide-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 14px;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;}
-.hide-btn:active{border-color:var(--green);color:var(--green);}
-.lock-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--dim);padding:8px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;min-height:36px;}
-.lock-btn:hover{color:var(--amber);border-color:var(--amber);}
+.hide-btn,.lock-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 12px;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;}
+.hide-btn:hover{border-color:var(--green);color:var(--green);}
+.lock-btn:hover{border-color:var(--amber);color:var(--amber);}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0;}
-.status-dot.offline{background:var(--red);box-shadow:0 0 6px var(--red);}
+.status-dot.offline{background:var(--red);box-shadow:0 0 6px var(--red);animation:none;}
 .status-dot.syncing{background:var(--amber);box-shadow:0 0 6px var(--amber);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
 .balance-section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;}
-.bal-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.bal-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .sync-badge{font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mono);}
 .sync-badge.ok{color:var(--green);background:rgba(0,212,170,0.1);}
 .sync-badge.err{color:var(--red);background:rgba(255,77,106,0.1);}
 .sync-badge.syncing{color:var(--amber);background:rgba(245,166,35,0.1);}
 .bal-amount{font-family:var(--mono);font-size:36px;font-weight:600;color:var(--text);line-height:1;transition:filter 0.3s;}
 .bal-amount.blurred,.blurred-val{filter:blur(7px);user-select:none;}
+
 .ticker-strip{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .ticker-strip::-webkit-scrollbar{display:none;}
 .ticker-inner{display:flex;align-items:center;gap:16px;white-space:nowrap;min-width:max-content;}
@@ -71,8 +70,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .t-chg{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:3px;}
 .t-chg.up{color:var(--green);background:rgba(0,212,170,0.08);}
 .t-chg.dn{color:var(--red);background:rgba(255,77,106,0.08);}
+.t-src{font-family:var(--mono);font-size:9px;color:var(--dim);padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.04);}
+
 .cols{display:grid;grid-template-columns:1fr 240px;gap:10px;}
-.holdings-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.holdings-card,.alloc-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 .card-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:12px 16px 10px;border-bottom:1px solid var(--border);}
 .holdings-table{width:100%;border-collapse:collapse;}
 .holdings-table th{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg3);}
@@ -80,6 +81,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .holdings-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
 .holdings-table tr:last-child td{border-bottom:none;}
 .holdings-table tr:hover td{background:var(--bg3);}
+
+/* Mobile cards */
 .holding-cards{display:none;padding:8px;}
 .holding-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
 .holding-card:last-child{margin-bottom:0;}
@@ -93,18 +96,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .hc-pct{font-family:var(--mono);font-size:12px;}
 .hc-bar-track{width:60px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
 .hc-bar-fill{height:100%;border-radius:2px;}
-.hc-del{background:none;border:1px solid var(--border2);color:var(--dim);cursor:pointer;font-size:14px;padding:6px 10px;border-radius:6px;transition:all 0.15s;min-width:36px;min-height:36px;}
+.hc-del{background:none;border:1px solid var(--border2);color:var(--dim);cursor:pointer;font-size:14px;padding:6px 10px;border-radius:6px;min-width:36px;min-height:36px;}
 .hc-del:active{color:var(--red);border-color:var(--red);}
+
 .sym-cell{display:flex;align-items:center;gap:8px;}
 .sym-badge{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--text);}
 .td-mono{font-family:var(--mono);font-size:12px;}
+.src-tag{font-family:var(--mono);font-size:9px;color:var(--dim);padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.04);margin-left:4px;}
 .warn{color:var(--amber);font-size:12px;margin-right:3px;}
 .pct-bar-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
 .pct-bar{height:3px;border-radius:2px;background:var(--green);flex-shrink:0;}
 .pct-bar.warn-bar{background:var(--amber);}
-.del-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:2px 4px;border-radius:3px;transition:color 0.15s;line-height:1;}
+.del-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:2px 4px;border-radius:3px;line-height:1;}
 .del-btn:hover{color:var(--red);}
-.alloc-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+
 .alloc-list{padding:8px 0;}
 .alloc-item{padding:8px 16px;}
 .alloc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
@@ -112,6 +117,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .alloc-pct{font-family:var(--mono);font-size:12px;color:var(--muted);}
 .alloc-track{height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
 .alloc-fill{height:100%;border-radius:2px;transition:width 0.6s ease;}
+
 .add-section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:10px;}
 .add-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px;}
 .add-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -119,12 +125,27 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .add-row input:focus{border-color:var(--green);}
 .inp-sym{width:90px;text-transform:uppercase;}
 .inp-shares{width:110px;}
-.add-btn{font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px 18px;border-radius:6px;cursor:pointer;letter-spacing:1px;white-space:nowrap;transition:all 0.15s;min-height:44px;}
+.add-btn{font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px 18px;border-radius:6px;cursor:pointer;letter-spacing:1px;white-space:nowrap;min-height:44px;}
 .add-btn:active{background:rgba(0,212,170,0.25);}
 .add-btn:disabled{opacity:0.4;cursor:not-allowed;}
 .err-msg{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:8px;min-height:16px;}
+
+/* Refresh footer */
+.refresh-footer{margin-top:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.refresh-info{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.refresh-info span{color:var(--dim);}
+.refresh-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;display:flex;align-items:center;gap:6px;}
+.refresh-btn:hover{border-color:var(--green);color:var(--green);}
+.refresh-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.refresh-btn.spinning .ri{display:inline-block;animation:spin 0.8s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.source-legend{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:6px;width:100%;}
+.source-legend span{margin-right:10px;}
+.src-av{color:#4d9fff;} .src-yf{color:#f5a623;} .src-fh{color:#c77dff;}
+
 .loading-msg{font-family:var(--mono);font-size:12px;color:var(--dim);padding:8px 16px;}
 .empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
+
 @media(max-width:640px){
   .bal-amount{font-size:28px;}
   .cols{grid-template-columns:1fr;}
@@ -133,12 +154,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   .add-row{flex-direction:column;align-items:stretch;}
   .inp-sym,.inp-shares{width:100%;}
   .add-btn{width:100%;}
+  .refresh-footer{flex-direction:column;align-items:stretch;}
+  .refresh-btn{justify-content:center;}
 }
 </style>
 </head>
 <body>
 
-<!-- Login Screen -->
+<!-- Login -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
@@ -150,7 +173,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   </div>
 </div>
 
-<!-- App Screen -->
+<!-- App -->
 <div id="appScreen">
 <div class="wrap">
   <div class="header">
@@ -158,7 +181,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <div class="header-right">
       <div class="status-dot" id="statusDot"></div>
       <button class="hide-btn" id="hideBtn" onclick="toggleBlur()">[ HIDE ]</button>
-      <button class="lock-btn" onclick="lockApp()" title="Lock"><i class="ti ti-lock" style="font-size:14px"></i></button>
+      <button class="lock-btn" onclick="lockApp()">[ LOCK ]</button>
     </div>
   </div>
 
@@ -206,54 +229,51 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     </div>
     <div class="err-msg" id="errMsg"></div>
   </div>
+
+  <!-- Refresh Footer -->
+  <div class="refresh-footer">
+    <div>
+      <div class="refresh-info">Last updated: <span id="lastUpdated">—</span></div>
+      <div class="source-legend">
+        Sources: <span class="src-av">■ Alpha Vantage</span><span class="src-yf">■ Yahoo Finance</span><span class="src-fh">■ Finnhub</span>
+      </div>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">
+      <span class="ri">↻</span> Refresh Prices
+    </button>
+  </div>
 </div>
 </div>
 
 <script>
 const AV_KEY='ATLY8E0ZH2SYPTOA';
+const FH_KEY='d0ej9qhr01qgsie0gd9gd0ej9qhr01qgsie0gdg0'; // free public demo key
 const SB_URL='https://zekusnkejcyjwermbdgb.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
 const SB_HEADERS={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
 const PW_HASH='e457b6fbf1f1a472b7f0ff250835aee1cbd6fbc7527ed623859036ff070fe453';
 const SESSION_KEY='pt_session';
-const MAX_ATTEMPTS=5;
-const LOCKOUT_MS=15*60*1000;
 
-let holdings=[],prices={},blurred=false,priceCache={},cacheTime={};
+let holdings=[],prices={},priceSources={},blurred=false,priceCache={},cacheTime={};
 let failedAttempts=0,lockedUntil=0;
 
+// ── Auth ──────────────────────────────────────────────────────────────
 async function sha256(str){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
 function isSessionValid(){
-  try{
-    const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');
-    return s.auth===true && Date.now()<s.expires;
-  }catch{return false;}
+  try{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');return s.auth===true&&Date.now()<s.expires;}catch{return false;}
 }
-
-function saveSession(){
-  sessionStorage.setItem(SESSION_KEY,JSON.stringify({auth:true,expires:Date.now()+8*60*60*1000}));
-}
-
-function clearSession(){
-  sessionStorage.removeItem(SESSION_KEY);
-}
+function saveSession(){sessionStorage.setItem(SESSION_KEY,JSON.stringify({auth:true,expires:Date.now()+8*60*60*1000}));}
+function clearSession(){sessionStorage.removeItem(SESSION_KEY);}
 
 async function attemptLogin(){
   const now=Date.now();
-  if(now<lockedUntil){
-    const mins=Math.ceil((lockedUntil-now)/60000);
-    document.getElementById('loginErr').textContent=`Too many attempts. Try again in ${mins} min.`;
-    return;
-  }
-  const pw=document.getElementById('pwInput').value;
-  const hash=await sha256(pw);
+  if(now<lockedUntil){const m=Math.ceil((lockedUntil-now)/60000);document.getElementById('loginErr').textContent=`Too many attempts. Try again in ${m} min.`;return;}
+  const hash=await sha256(document.getElementById('pwInput').value);
   if(hash===PW_HASH){
-    failedAttempts=0;
-    saveSession();
+    failedAttempts=0;saveSession();
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('appScreen').classList.add('visible');
     document.getElementById('pwInput').value='';
@@ -262,34 +282,78 @@ async function attemptLogin(){
   } else {
     failedAttempts++;
     document.getElementById('pwInput').value='';
-    if(failedAttempts>=MAX_ATTEMPTS){
-      lockedUntil=Date.now()+LOCKOUT_MS;
-      document.getElementById('loginErr').textContent='Too many attempts. Locked for 15 minutes.';
-      document.getElementById('loginAttempts').textContent='';
-    } else {
-      const left=MAX_ATTEMPTS-failedAttempts;
-      document.getElementById('loginErr').textContent='Incorrect password.';
-      document.getElementById('loginAttempts').textContent=`${left} attempt${left===1?'':'s'} remaining`;
-    }
+    if(failedAttempts>=5){lockedUntil=Date.now()+15*60*1000;document.getElementById('loginErr').textContent='Too many attempts. Locked for 15 minutes.';}
+    else{const l=5-failedAttempts;document.getElementById('loginErr').textContent='Incorrect password.';document.getElementById('loginAttempts').textContent=`${l} attempt${l===1?'':'s'} remaining`;}
   }
 }
-
-function lockApp(){
-  clearSession();
-  document.getElementById('appScreen').classList.remove('visible');
-  document.getElementById('loginScreen').classList.remove('hidden');
-  document.getElementById('loginErr').textContent='';
-  document.getElementById('loginAttempts').textContent='';
-}
-
+function lockApp(){clearSession();document.getElementById('appScreen').classList.remove('visible');document.getElementById('loginScreen').classList.remove('hidden');document.getElementById('loginErr').textContent='';document.getElementById('loginAttempts').textContent='';}
 document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')attemptLogin();});
+if(isSessionValid()){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('appScreen').classList.add('visible');initApp();}
 
-if(isSessionValid()){
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('appScreen').classList.add('visible');
-  initApp();
+// ── Price fetching with fallback chain ────────────────────────────────
+async function fetchFromAV(sym){
+  try{
+    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
+    const d=await r.json();const q=d['Global Quote'];
+    if(!q||!q['05. price']||parseFloat(q['05. price'])===0)return null;
+    return{price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),changePct:parseFloat(q['10. change percent']),src:'AV'};
+  }catch{return null;}
 }
 
+async function fetchFromYahoo(sym){
+  try{
+    const r=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=2d`,{headers:{'Accept':'application/json'}});
+    if(!r.ok)return null;
+    const d=await r.json();
+    const meta=d?.chart?.result?.[0]?.meta;
+    if(!meta||!meta.regularMarketPrice)return null;
+    const price=meta.regularMarketPrice;
+    const prev=meta.chartPreviousClose||meta.previousClose||price;
+    const change=price-prev;
+    const changePct=prev>0?(change/prev)*100:0;
+    return{price,change,changePct,src:'YF'};
+  }catch{return null;}
+}
+
+async function fetchFromFinnhub(sym){
+  try{
+    const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=d0ej9qhr01qgsie0gd9gd0ej9qhr01qgsie0gdg0`);
+    if(!r.ok)return null;
+    const d=await r.json();
+    if(!d.c||d.c===0)return null;
+    const price=d.c,prev=d.pc||d.c,change=d.d||price-prev,changePct=d.dp||(prev>0?(change/prev)*100:0);
+    return{price,change,changePct,src:'FH'};
+  }catch{return null;}
+}
+
+async function fetchPrice(sym,forceRefresh=false){
+  const now=Date.now();
+  if(!forceRefresh&&priceCache[sym]&&(now-cacheTime[sym])<120000)return priceCache[sym];
+  // Try all three sources in parallel, use first success
+  const [av,yf,fh]=await Promise.all([fetchFromAV(sym),fetchFromYahoo(sym),fetchFromFinnhub(sym)]);
+  const result=av||yf||fh||null;
+  if(result){priceCache[sym]=result;cacheTime[sym]=now;}
+  return result;
+}
+
+async function refreshAllPrices(force=false){
+  const syms=[...new Set([...holdings.map(h=>h.sym),'QQQ','SPY','VIX','DIA'])];
+  await Promise.all(syms.map(async s=>{const d=await fetchPrice(s,force);if(d)prices[s]=d;}));
+  const now=new Date();
+  document.getElementById('lastUpdated').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+async function manualRefresh(){
+  const btn=document.getElementById('refreshBtn');
+  btn.disabled=true;btn.classList.add('spinning');
+  // Clear cache to force fresh fetch
+  priceCache={};cacheTime={};
+  await refreshAllPrices(true);
+  renderAll();
+  btn.disabled=false;btn.classList.remove('spinning');
+}
+
+// ── Sync status ───────────────────────────────────────────────────────
 function setSyncStatus(s){
   const dot=document.getElementById('statusDot'),badge=document.getElementById('syncBadge');
   dot.className='status-dot '+(s==='ok'?'':s==='syncing'?'syncing':'offline');
@@ -297,44 +361,23 @@ function setSyncStatus(s){
   badge.textContent=s==='ok'?'synced':s==='syncing'?'syncing...':'offline';
 }
 
+// ── Supabase ──────────────────────────────────────────────────────────
 async function dbLoad(){
   setSyncStatus('syncing');
   try{
     const r=await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`,{headers:SB_HEADERS});
-    if(!r.ok)throw new Error();
-    holdings=await r.json();
-    setSyncStatus('ok');
-  }catch{
-    setSyncStatus('error');
-    holdings=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');
-  }
+    if(!r.ok)throw new Error();holdings=await r.json();setSyncStatus('ok');
+  }catch{setSyncStatus('error');holdings=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');}
 }
+async function dbAdd(h){try{await fetch(`${SB_URL}/rest/v1/holdings`,{method:'POST',headers:SB_HEADERS,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
+async function dbUpdate(h){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`,{method:'PATCH',headers:SB_HEADERS,body:JSON.stringify({shares:h.shares})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
+async function dbDelete(id){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});setSyncStatus('ok');}catch{setSyncStatus('error');}}
 
-async function dbAdd(h){
-  try{const r=await fetch(`${SB_URL}/rest/v1/holdings`,{method:'POST',headers:SB_HEADERS,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares})});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
-}
-async function dbUpdate(h){
-  try{const r=await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`,{method:'PATCH',headers:SB_HEADERS,body:JSON.stringify({shares:h.shares})});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
-}
-async function dbDelete(id){
-  try{const r=await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
-}
-
-async function fetchPrice(sym){
-  const now=Date.now();
-  if(priceCache[sym]&&(now-cacheTime[sym])<60000)return priceCache[sym];
-  try{
-    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
-    const d=await r.json();const q=d['Global Quote'];
-    if(!q||!q['05. price'])return null;
-    const data={price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),changePct:parseFloat(q['10. change percent'])};
-    priceCache[sym]=data;cacheTime[sym]=now;return data;
-  }catch{return null;}
-}
-
-async function refreshAllPrices(){
-  const syms=[...new Set([...holdings.map(h=>h.sym),'QQQ','SPY','VIX','DIA'])];
-  await Promise.all(syms.map(async s=>{const d=await fetchPrice(s);if(d)prices[s]=d;}));
+// ── Render ────────────────────────────────────────────────────────────
+function srcTag(sym){
+  const s=prices[sym]?.src;if(!s)return'';
+  const cls=s==='AV'?'src-av':s==='YF'?'src-yf':'src-fh';
+  return`<span class="src-tag ${cls}">${s}</span>`;
 }
 
 function renderTicker(){
@@ -366,9 +409,9 @@ function renderHoldings(total){
     const p=prices[h.sym],val=p?p.price*h.shares:null,pct=val&&total>0?(val/total)*100:0,isWarn=pct>50;
     const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
     const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
-    return `<tr>
-      <td><div class="sym-cell"><span class="sym-badge">${h.sym}</span>${p?`<span style="font-size:11px;color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}</div></td>
-      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'—'}</td>
+    return`<tr>
+      <td><div class="sym-cell"><span class="sym-badge">${h.sym}</span>${srcTag(h.sym)}${p?`<span style="font-size:11px;color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}</div></td>
+      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'<span style="color:var(--dim)">—</span>'}</td>
       <td class="td-mono" style="color:var(--muted)">${Number(h.shares).toLocaleString()}</td>
       <td class="td-mono${blurred?' blurred-val':''}" style="font-weight:500">${valStr}</td>
       <td><div class="pct-bar-wrap">${isWarn?'<span class="warn">⚠</span>':''}<span class="td-mono" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:34px;text-align:right${blurred?';filter:blur(7px)':''}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div></div></td>
@@ -387,9 +430,9 @@ function renderMobileCards(total){
     const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
     const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
     const barColor=isWarn?'var(--amber)':colors[i%colors.length];
-    return `<div class="holding-card">
+    return`<div class="holding-card">
       <div class="hc-top">
-        <div><div class="hc-sym">${h.sym}${isWarn?' <span style="color:var(--amber);font-size:13px">⚠</span>':''}</div>${p?`<div class="hc-chg" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}% &nbsp;$${p.price.toFixed(2)}</div>`:''}</div>
+        <div><div class="hc-sym">${h.sym}${srcTag(h.sym)}${isWarn?' <span style="color:var(--amber)">⚠</span>':''}</div>${p?`<div class="hc-chg" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}% · $${p.price.toFixed(2)}</div>`:''}</div>
         <div><div class="hc-value${blurred?' blurred-val':''}">${valStr}</div><div class="hc-value-label">${Number(h.shares).toLocaleString()} shares</div></div>
       </div>
       <div class="hc-bottom">
@@ -408,6 +451,7 @@ function renderAlloc(total){
   list.innerHTML=sorted.map((item,i)=>`<div class="alloc-item"><div class="alloc-top"><span class="alloc-sym">${item.sym}</span><span class="alloc-pct${blurred?' blurred-val':''}">${item.pct.toFixed(1)}%</span></div><div class="alloc-track"><div class="alloc-fill" style="width:${item.pct}%;background:${item.pct>50?'var(--amber)':colors[i%colors.length]}"></div></div></div>`).join('');
 }
 
+// ── Add / Delete ──────────────────────────────────────────────────────
 async function addHolding(){
   const sym=document.getElementById('inpSym').value.trim().toUpperCase();
   const shares=parseFloat(document.getElementById('inpShares').value);
@@ -416,7 +460,8 @@ async function addHolding(){
   if(!sym){err.textContent='Enter a ticker symbol.';return;}
   if(!shares||shares<=0){err.textContent='Enter a valid share count.';return;}
   btn.disabled=true;btn.textContent='FETCHING...';
-  const data=await fetchPrice(sym);
+  priceCache[sym]=null; // force fresh fetch for new ticker
+  const data=await fetchPrice(sym,true);
   if(!data){err.textContent=`Could not fetch price for ${sym}. Check the ticker.`;btn.disabled=false;btn.textContent='+ ADD';return;}
   prices[sym]=data;setSyncStatus('syncing');
   const existing=holdings.find(h=>h.sym===sym);
@@ -430,25 +475,20 @@ async function addHolding(){
 
 async function deleteHolding(id){
   holdings=holdings.filter(h=>h.id!==id);setSyncStatus('syncing');
-  await dbDelete(id);
-  localStorage.setItem('portfolio_holdings_v2',JSON.stringify(holdings));
-  renderAll();
+  await dbDelete(id);localStorage.setItem('portfolio_holdings_v2',JSON.stringify(holdings));renderAll();
 }
 
-function toggleBlur(){
-  blurred=!blurred;
-  document.getElementById('hideBtn').textContent=blurred?'[ SHOW ]':'[ HIDE ]';
-  renderAll();
-}
+function toggleBlur(){blurred=!blurred;document.getElementById('hideBtn').textContent=blurred?'[ SHOW ]':'[ HIDE ]';renderAll();}
 
 document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inpShares').focus();});
 document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
 
+// ── Init ──────────────────────────────────────────────────────────────
 async function initApp(){
   await dbLoad();
   await refreshAllPrices();
   renderAll();
-  setInterval(()=>refreshAllPrices().then(renderAll),90000);
+  setInterval(()=>refreshAllPrices().then(renderAll),120000);
   setInterval(async()=>{await dbLoad();renderAll();},30000);
 }
 </script>
