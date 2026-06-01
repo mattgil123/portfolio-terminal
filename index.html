@@ -20,6 +20,25 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overscroll-behavior:none;}
+
+/* Login screen */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px 32px;width:100%;max-width:360px;}
+.login-logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+.login-logo span{color:var(--dim);}
+.login-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.login-input{width:100%;font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:6px;outline:none;transition:border-color 0.15s;margin-bottom:14px;}
+.login-input:focus{border-color:var(--green);}
+.login-btn{width:100%;font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:12px;border-radius:6px;cursor:pointer;letter-spacing:2px;transition:all 0.15s;text-transform:uppercase;}
+.login-btn:hover{background:rgba(0,212,170,0.2);}
+.login-btn:active{background:rgba(0,212,170,0.3);}
+.login-err{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:10px;min-height:16px;text-align:center;}
+.login-attempts{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:16px;text-align:center;}
+#loginScreen.hidden{display:none;}
+
+/* App */
+#appScreen{display:none;}
+#appScreen.visible{display:block;}
 .wrap{max-width:1100px;margin:0 auto;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));padding-top:calc(16px + env(safe-area-inset-top));}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;}
@@ -27,6 +46,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .header-right{display:flex;align-items:center;gap:10px;}
 .hide-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 14px;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;}
 .hide-btn:active{border-color:var(--green);color:var(--green);}
+.lock-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--dim);padding:8px 10px;border-radius:4px;cursor:pointer;transition:all 0.15s;min-height:36px;}
+.lock-btn:hover{color:var(--amber);border-color:var(--amber);}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0;}
 .status-dot.offline{background:var(--red);box-shadow:0 0 6px var(--red);}
 .status-dot.syncing{background:var(--amber);box-shadow:0 0 6px var(--amber);}
@@ -116,12 +137,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 </style>
 </head>
 <body>
+
+<!-- Login Screen -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
+    <div class="login-label">Password</div>
+    <input class="login-input" type="password" id="pwInput" placeholder="Enter password" autocomplete="current-password" />
+    <button class="login-btn" onclick="attemptLogin()">Unlock</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-attempts" id="loginAttempts"></div>
+  </div>
+</div>
+
+<!-- App Screen -->
+<div id="appScreen">
 <div class="wrap">
   <div class="header">
     <div class="logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
     <div class="header-right">
-      <div class="status-dot" id="statusDot" title="Syncing"></div>
+      <div class="status-dot" id="statusDot"></div>
       <button class="hide-btn" id="hideBtn" onclick="toggleBlur()">[ HIDE ]</button>
+      <button class="lock-btn" onclick="lockApp()" title="Lock"><i class="ti ti-lock" style="font-size:14px"></i></button>
     </div>
   </div>
 
@@ -170,124 +207,162 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <div class="err-msg" id="errMsg"></div>
   </div>
 </div>
+</div>
 
 <script>
-const AV_KEY = 'ATLY8E0ZH2SYPTOA';
-const SB_URL = 'https://zekusnkejcyjwermbdgb.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
-const SB_HEADERS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+const AV_KEY='ATLY8E0ZH2SYPTOA';
+const SB_URL='https://zekusnkejcyjwermbdgb.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
+const SB_HEADERS={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+const PW_HASH='e457b6fbf1f1a472b7f0ff250835aee1cbd6fbc7527ed623859036ff070fe453';
+const SESSION_KEY='pt_session';
+const MAX_ATTEMPTS=5;
+const LOCKOUT_MS=15*60*1000;
 
-let holdings = [];
-let prices = {};
-let blurred = false;
-let priceCache = {};
-let cacheTime = {};
+let holdings=[],prices={},blurred=false,priceCache={},cacheTime={};
+let failedAttempts=0,lockedUntil=0;
 
-function setSyncStatus(status) {
-  const dot = document.getElementById('statusDot');
-  const badge = document.getElementById('syncBadge');
-  dot.className = 'status-dot ' + (status === 'ok' ? '' : status === 'syncing' ? 'syncing' : 'offline');
-  badge.className = 'sync-badge ' + (status === 'ok' ? 'ok' : status === 'syncing' ? 'syncing' : 'err');
-  badge.textContent = status === 'ok' ? 'synced' : status === 'syncing' ? 'syncing...' : 'offline';
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-async function dbLoad() {
-  setSyncStatus('syncing');
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`, { headers: SB_HEADERS });
-    if (!r.ok) throw new Error('Load failed');
-    holdings = await r.json();
-    setSyncStatus('ok');
-  } catch(e) {
-    setSyncStatus('error');
-    holdings = JSON.parse(localStorage.getItem('portfolio_holdings_v2') || '[]');
+function isSessionValid(){
+  try{
+    const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');
+    return s.auth===true && Date.now()<s.expires;
+  }catch{return false;}
+}
+
+function saveSession(){
+  sessionStorage.setItem(SESSION_KEY,JSON.stringify({auth:true,expires:Date.now()+8*60*60*1000}));
+}
+
+function clearSession(){
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+async function attemptLogin(){
+  const now=Date.now();
+  if(now<lockedUntil){
+    const mins=Math.ceil((lockedUntil-now)/60000);
+    document.getElementById('loginErr').textContent=`Too many attempts. Try again in ${mins} min.`;
+    return;
+  }
+  const pw=document.getElementById('pwInput').value;
+  const hash=await sha256(pw);
+  if(hash===PW_HASH){
+    failedAttempts=0;
+    saveSession();
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('appScreen').classList.add('visible');
+    document.getElementById('pwInput').value='';
+    document.getElementById('loginErr').textContent='';
+    initApp();
+  } else {
+    failedAttempts++;
+    document.getElementById('pwInput').value='';
+    if(failedAttempts>=MAX_ATTEMPTS){
+      lockedUntil=Date.now()+LOCKOUT_MS;
+      document.getElementById('loginErr').textContent='Too many attempts. Locked for 15 minutes.';
+      document.getElementById('loginAttempts').textContent='';
+    } else {
+      const left=MAX_ATTEMPTS-failedAttempts;
+      document.getElementById('loginErr').textContent='Incorrect password.';
+      document.getElementById('loginAttempts').textContent=`${left} attempt${left===1?'':'s'} remaining`;
+    }
   }
 }
 
-async function dbAdd(h) {
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/holdings`, {
-      method: 'POST', headers: SB_HEADERS,
-      body: JSON.stringify({ id: h.id, sym: h.sym, shares: h.shares })
-    });
-    if (!r.ok) throw new Error('Add failed');
+function lockApp(){
+  clearSession();
+  document.getElementById('appScreen').classList.remove('visible');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginErr').textContent='';
+  document.getElementById('loginAttempts').textContent='';
+}
+
+document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')attemptLogin();});
+
+if(isSessionValid()){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appScreen').classList.add('visible');
+  initApp();
+}
+
+function setSyncStatus(s){
+  const dot=document.getElementById('statusDot'),badge=document.getElementById('syncBadge');
+  dot.className='status-dot '+(s==='ok'?'':s==='syncing'?'syncing':'offline');
+  badge.className='sync-badge '+(s==='ok'?'ok':s==='syncing'?'syncing':'err');
+  badge.textContent=s==='ok'?'synced':s==='syncing'?'syncing...':'offline';
+}
+
+async function dbLoad(){
+  setSyncStatus('syncing');
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`,{headers:SB_HEADERS});
+    if(!r.ok)throw new Error();
+    holdings=await r.json();
     setSyncStatus('ok');
-    return true;
-  } catch(e) { setSyncStatus('error'); return false; }
+  }catch{
+    setSyncStatus('error');
+    holdings=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');
+  }
 }
 
-async function dbUpdate(h) {
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`, {
-      method: 'PATCH', headers: SB_HEADERS,
-      body: JSON.stringify({ shares: h.shares })
-    });
-    if (!r.ok) throw new Error('Update failed');
-    setSyncStatus('ok');
-    return true;
-  } catch(e) { setSyncStatus('error'); return false; }
+async function dbAdd(h){
+  try{const r=await fetch(`${SB_URL}/rest/v1/holdings`,{method:'POST',headers:SB_HEADERS,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares})});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
+}
+async function dbUpdate(h){
+  try{const r=await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`,{method:'PATCH',headers:SB_HEADERS,body:JSON.stringify({shares:h.shares})});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
+}
+async function dbDelete(id){
+  try{const r=await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});if(!r.ok)throw new Error();setSyncStatus('ok');return true;}catch{setSyncStatus('error');return false;}
 }
 
-async function dbDelete(id) {
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`, {
-      method: 'DELETE', headers: SB_HEADERS
-    });
-    if (!r.ok) throw new Error('Delete failed');
-    setSyncStatus('ok');
-    return true;
-  } catch(e) { setSyncStatus('error'); return false; }
+async function fetchPrice(sym){
+  const now=Date.now();
+  if(priceCache[sym]&&(now-cacheTime[sym])<60000)return priceCache[sym];
+  try{
+    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
+    const d=await r.json();const q=d['Global Quote'];
+    if(!q||!q['05. price'])return null;
+    const data={price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),changePct:parseFloat(q['10. change percent'])};
+    priceCache[sym]=data;cacheTime[sym]=now;return data;
+  }catch{return null;}
 }
 
-async function fetchPrice(sym) {
-  const now = Date.now();
-  if (priceCache[sym] && (now - cacheTime[sym]) < 60000) return priceCache[sym];
-  try {
-    const r = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
-    const d = await r.json();
-    const q = d['Global Quote'];
-    if (!q || !q['05. price']) return null;
-    const data = { price: parseFloat(q['05. price']), change: parseFloat(q['09. change']), changePct: parseFloat(q['10. change percent']) };
-    priceCache[sym] = data; cacheTime[sym] = now;
-    return data;
-  } catch(e) { return null; }
+async function refreshAllPrices(){
+  const syms=[...new Set([...holdings.map(h=>h.sym),'QQQ','SPY','VIX','DIA'])];
+  await Promise.all(syms.map(async s=>{const d=await fetchPrice(s);if(d)prices[s]=d;}));
 }
 
-async function refreshAllPrices() {
-  const syms = [...new Set([...holdings.map(h => h.sym), 'QQQ','SPY','VIX','DIA'])];
-  await Promise.all(syms.map(async s => { const d = await fetchPrice(s); if (d) prices[s] = d; }));
-}
-
-function renderTicker() {
-  [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym]) => {
-    const d = prices[sym]; if (!d) return;
-    document.getElementById(id+'Price').textContent = '$'+d.price.toFixed(2);
-    const el = document.getElementById(id+'Chg');
-    el.textContent = (d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
-    el.className = 't-chg '+(d.change>=0?'up':'dn');
+function renderTicker(){
+  [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym])=>{
+    const d=prices[sym];if(!d)return;
+    document.getElementById(id+'Price').textContent='$'+d.price.toFixed(2);
+    const el=document.getElementById(id+'Chg');
+    el.textContent=(d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
+    el.className='t-chg '+(d.change>=0?'up':'dn');
   });
 }
 
-function calcTotal() {
-  return holdings.reduce((s,h) => { const p=prices[h.sym]; return s+(p?p.price*h.shares:0); }, 0);
-}
+function calcTotal(){return holdings.reduce((s,h)=>{const p=prices[h.sym];return s+(p?p.price*h.shares:0);},0);}
 
-function renderAll() {
+function renderAll(){
   renderTicker();
-  const total = calcTotal();
-  const balEl = document.getElementById('totalBal');
-  balEl.textContent = '$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  balEl.className = 'bal-amount'+(blurred?' blurred':'');
-  renderHoldings(total);
-  renderMobileCards(total);
-  renderAlloc(total);
+  const total=calcTotal();
+  const balEl=document.getElementById('totalBal');
+  balEl.textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  balEl.className='bal-amount'+(blurred?' blurred':'');
+  renderHoldings(total);renderMobileCards(total);renderAlloc(total);
 }
 
-function renderHoldings(total) {
-  const body = document.getElementById('holdingsBody');
-  if (!holdings.length) { body.innerHTML='<tr><td colspan="6" class="empty-state">No holdings yet. Add your first position below.</td></tr>'; return; }
-  const sorted = [...holdings].sort((a,b)=>{ const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0; return bv-av; });
-  body.innerHTML = sorted.map(h => {
+function renderHoldings(total){
+  const body=document.getElementById('holdingsBody');
+  if(!holdings.length){body.innerHTML='<tr><td colspan="6" class="empty-state">No holdings yet. Add your first position below.</td></tr>';return;}
+  const sorted=[...holdings].sort((a,b)=>{const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0;return bv-av;});
+  body.innerHTML=sorted.map(h=>{
     const p=prices[h.sym],val=p?p.price*h.shares:null,pct=val&&total>0?(val/total)*100:0,isWarn=pct>50;
     const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
     const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
@@ -302,11 +377,11 @@ function renderHoldings(total) {
   }).join('');
 }
 
-function renderMobileCards(total) {
-  const container = document.getElementById('holdingCards');
-  if (!holdings.length) { container.innerHTML='<div class="empty-state">No holdings yet. Add your first position below.</div>'; return; }
+function renderMobileCards(total){
+  const container=document.getElementById('holdingCards');
+  if(!holdings.length){container.innerHTML='<div class="empty-state">No holdings yet. Add your first position below.</div>';return;}
   const colors=['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
-  const sorted=[...holdings].sort((a,b)=>{ const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0; return bv-av; });
+  const sorted=[...holdings].sort((a,b)=>{const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0;return bv-av;});
   container.innerHTML=sorted.map((h,i)=>{
     const p=prices[h.sym],val=p?p.price*h.shares:null,pct=val&&total>0?(val/total)*100:0,isWarn=pct>50;
     const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
@@ -325,7 +400,7 @@ function renderMobileCards(total) {
   }).join('');
 }
 
-function renderAlloc(total) {
+function renderAlloc(total){
   const list=document.getElementById('allocList');
   if(!holdings.length){list.innerHTML='<div class="loading-msg">Add holdings to see allocation.</div>';return;}
   const colors=['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
@@ -333,7 +408,7 @@ function renderAlloc(total) {
   list.innerHTML=sorted.map((item,i)=>`<div class="alloc-item"><div class="alloc-top"><span class="alloc-sym">${item.sym}</span><span class="alloc-pct${blurred?' blurred-val':''}">${item.pct.toFixed(1)}%</span></div><div class="alloc-track"><div class="alloc-fill" style="width:${item.pct}%;background:${item.pct>50?'var(--amber)':colors[i%colors.length]}"></div></div></div>`).join('');
 }
 
-async function addHolding() {
+async function addHolding(){
   const sym=document.getElementById('inpSym').value.trim().toUpperCase();
   const shares=parseFloat(document.getElementById('inpShares').value);
   const err=document.getElementById('errMsg'),btn=document.getElementById('addBtn');
@@ -343,27 +418,18 @@ async function addHolding() {
   btn.disabled=true;btn.textContent='FETCHING...';
   const data=await fetchPrice(sym);
   if(!data){err.textContent=`Could not fetch price for ${sym}. Check the ticker.`;btn.disabled=false;btn.textContent='+ ADD';return;}
-  prices[sym]=data;
-  setSyncStatus('syncing');
+  prices[sym]=data;setSyncStatus('syncing');
   const existing=holdings.find(h=>h.sym===sym);
-  if(existing){
-    existing.shares=parseFloat(existing.shares)+shares;
-    await dbUpdate(existing);
-  } else {
-    const h={id:Date.now().toString(),sym,shares};
-    holdings.push(h);
-    await dbAdd(h);
-  }
+  if(existing){existing.shares=parseFloat(existing.shares)+shares;await dbUpdate(existing);}
+  else{const h={id:Date.now().toString(),sym,shares};holdings.push(h);await dbAdd(h);}
   localStorage.setItem('portfolio_holdings_v2',JSON.stringify(holdings));
   renderAll();
-  document.getElementById('inpSym').value='';
-  document.getElementById('inpShares').value='';
+  document.getElementById('inpSym').value='';document.getElementById('inpShares').value='';
   btn.disabled=false;btn.textContent='+ ADD';
 }
 
-async function deleteHolding(id) {
-  holdings=holdings.filter(h=>h.id!==id);
-  setSyncStatus('syncing');
+async function deleteHolding(id){
+  holdings=holdings.filter(h=>h.id!==id);setSyncStatus('syncing');
   await dbDelete(id);
   localStorage.setItem('portfolio_holdings_v2',JSON.stringify(holdings));
   renderAll();
@@ -378,15 +444,13 @@ function toggleBlur(){
 document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inpShares').focus();});
 document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
 
-async function init() {
+async function initApp(){
   await dbLoad();
   await refreshAllPrices();
   renderAll();
+  setInterval(()=>refreshAllPrices().then(renderAll),90000);
+  setInterval(async()=>{await dbLoad();renderAll();},30000);
 }
-
-init();
-setInterval(()=>refreshAllPrices().then(renderAll), 90000);
-setInterval(async()=>{ await dbLoad(); renderAll(); }, 30000);
 </script>
 </body>
 </html>
