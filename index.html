@@ -20,7 +20,6 @@
 html{-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overscroll-behavior:none;}
 
-/* Login */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
 .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px 32px;width:100%;max-width:360px;}
 .login-logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
@@ -33,10 +32,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .login-err{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:10px;min-height:16px;text-align:center;}
 .login-attempts{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:16px;text-align:center;}
 #loginScreen.hidden{display:none;}
-
-/* App */
 #appScreen{display:none;}
 #appScreen.visible{display:block;}
+
 .wrap{max-width:1100px;margin:0 auto;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));padding-top:calc(16px + env(safe-area-inset-top));}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;}
@@ -70,7 +68,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .t-chg{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:3px;}
 .t-chg.up{color:var(--green);background:rgba(0,212,170,0.08);}
 .t-chg.dn{color:var(--red);background:rgba(255,77,106,0.08);}
-.t-src{font-family:var(--mono);font-size:9px;color:var(--dim);padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.04);}
 
 .cols{display:grid;grid-template-columns:1fr 240px;gap:10px;}
 .holdings-card,.alloc-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
@@ -82,7 +79,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .holdings-table tr:last-child td{border-bottom:none;}
 .holdings-table tr:hover td{background:var(--bg3);}
 
-/* Mobile cards */
 .holding-cards{display:none;padding:8px;}
 .holding-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
 .holding-card:last-child{margin-bottom:0;}
@@ -101,8 +97,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 .sym-cell{display:flex;align-items:center;gap:8px;}
 .sym-badge{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--text);}
+.src-tag{font-family:var(--mono);font-size:9px;padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.05);}
+.src-yf{color:#f5a623;} .src-av{color:#4d9fff;}
 .td-mono{font-family:var(--mono);font-size:12px;}
-.src-tag{font-family:var(--mono);font-size:9px;color:var(--dim);padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.04);margin-left:4px;}
 .warn{color:var(--amber);font-size:12px;margin-right:3px;}
 .pct-bar-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
 .pct-bar{height:3px;border-radius:2px;background:var(--green);flex-shrink:0;}
@@ -130,21 +127,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .add-btn:disabled{opacity:0.4;cursor:not-allowed;}
 .err-msg{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:8px;min-height:16px;}
 
-/* Refresh footer */
-.refresh-footer{margin-top:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.refresh-info{font-family:var(--mono);font-size:11px;color:var(--muted);}
-.refresh-info span{color:var(--dim);}
-.refresh-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;display:flex;align-items:center;gap:6px;}
+.refresh-footer{margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.refresh-info{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;}
+.refresh-info b{color:var(--text);}
+.refresh-info .src-note{font-size:10px;color:var(--dim);}
+.refresh-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .refresh-btn:hover{border-color:var(--green);color:var(--green);}
 .refresh-btn:disabled{opacity:0.4;cursor:not-allowed;}
-.refresh-btn.spinning .ri{display:inline-block;animation:spin 0.8s linear infinite;}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.source-legend{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:6px;width:100%;}
-.source-legend span{margin-right:10px;}
-.src-av{color:#4d9fff;} .src-yf{color:#f5a623;} .src-fh{color:#c77dff;}
+.spin{display:inline-block;}
+.spinning .spin{animation:rot 0.7s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg)}}
 
-.loading-msg{font-family:var(--mono);font-size:12px;color:var(--dim);padding:8px 16px;}
-.empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
+.loading-msg,.empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
 
 @media(max-width:640px){
   .bal-amount{font-size:28px;}
@@ -154,14 +148,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   .add-row{flex-direction:column;align-items:stretch;}
   .inp-sym,.inp-shares{width:100%;}
   .add-btn{width:100%;}
-  .refresh-footer{flex-direction:column;align-items:stretch;}
+  .refresh-footer{flex-direction:column;}
   .refresh-btn{justify-content:center;}
 }
 </style>
 </head>
 <body>
 
-<!-- Login -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
@@ -173,7 +166,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   </div>
 </div>
 
-<!-- App -->
 <div id="appScreen">
 <div class="wrap">
   <div class="header">
@@ -230,16 +222,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <div class="err-msg" id="errMsg"></div>
   </div>
 
-  <!-- Refresh Footer -->
   <div class="refresh-footer">
-    <div>
-      <div class="refresh-info">Last updated: <span id="lastUpdated">—</span></div>
-      <div class="source-legend">
-        Sources: <span class="src-av">■ Alpha Vantage</span><span class="src-yf">■ Yahoo Finance</span><span class="src-fh">■ Finnhub</span>
-      </div>
+    <div class="refresh-info">
+      Last updated: <b id="lastUpdated">—</b><br>
+      <span class="src-note">
+        Sources: <span class="src-yf">■ Yahoo Finance</span> &nbsp;
+        <span class="src-av">■ Alpha Vantage (fallback)</span>
+      </span>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">
-      <span class="ri">↻</span> Refresh Prices
+      <span class="spin">↻</span>&nbsp; Refresh Prices
     </button>
   </div>
 </div>
@@ -247,14 +239,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 <script>
 const AV_KEY='ATLY8E0ZH2SYPTOA';
-const FH_KEY='d0ej9qhr01qgsie0gd9gd0ej9qhr01qgsie0gdg0'; // free public demo key
 const SB_URL='https://zekusnkejcyjwermbdgb.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
 const SB_HEADERS={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
 const PW_HASH='e457b6fbf1f1a472b7f0ff250835aee1cbd6fbc7527ed623859036ff070fe453';
 const SESSION_KEY='pt_session';
 
-let holdings=[],prices={},priceSources={},blurred=false,priceCache={},cacheTime={};
+let holdings=[],prices={},blurred=false,cache={};
 let failedAttempts=0,lockedUntil=0;
 
 // ── Auth ──────────────────────────────────────────────────────────────
@@ -262,12 +253,9 @@ async function sha256(str){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-function isSessionValid(){
-  try{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');return s.auth===true&&Date.now()<s.expires;}catch{return false;}
-}
+function isSessionValid(){try{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');return s.auth===true&&Date.now()<s.expires;}catch{return false;}}
 function saveSession(){sessionStorage.setItem(SESSION_KEY,JSON.stringify({auth:true,expires:Date.now()+8*60*60*1000}));}
 function clearSession(){sessionStorage.removeItem(SESSION_KEY);}
-
 async function attemptLogin(){
   const now=Date.now();
   if(now<lockedUntil){const m=Math.ceil((lockedUntil-now)/60000);document.getElementById('loginErr').textContent=`Too many attempts. Try again in ${m} min.`;return;}
@@ -280,8 +268,7 @@ async function attemptLogin(){
     document.getElementById('loginErr').textContent='';
     initApp();
   } else {
-    failedAttempts++;
-    document.getElementById('pwInput').value='';
+    failedAttempts++;document.getElementById('pwInput').value='';
     if(failedAttempts>=5){lockedUntil=Date.now()+15*60*1000;document.getElementById('loginErr').textContent='Too many attempts. Locked for 15 minutes.';}
     else{const l=5-failedAttempts;document.getElementById('loginErr').textContent='Incorrect password.';document.getElementById('loginAttempts').textContent=`${l} attempt${l===1?'':'s'} remaining`;}
   }
@@ -290,106 +277,104 @@ function lockApp(){clearSession();document.getElementById('appScreen').classList
 document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')attemptLogin();});
 if(isSessionValid()){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('appScreen').classList.add('visible');initApp();}
 
-// ── Price fetching with fallback chain ────────────────────────────────
-async function fetchFromAV(sym){
+// ── Price APIs ────────────────────────────────────────────────────────
+// Primary: Yahoo Finance — batch fetch all symbols at once, no key, no rate limit
+async function fetchYahooBatch(syms){
+  try{
+    const joined=syms.join(',');
+    // Use a CORS proxy since Yahoo blocks direct browser requests
+    const url=`https://corsproxy.io/?${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketPreviousClose`)}`;
+    const r=await fetch(url,{headers:{'Accept':'application/json'}});
+    if(!r.ok)return{};
+    const d=await r.json();
+    const results={};
+    const quotes=d?.quoteResponse?.result||[];
+    quotes.forEach(q=>{
+      if(q.regularMarketPrice){
+        results[q.symbol]={
+          price:q.regularMarketPrice,
+          change:q.regularMarketChange||0,
+          changePct:q.regularMarketChangePercent||0,
+          src:'YF'
+        };
+      }
+    });
+    return results;
+  }catch{return{};}
+}
+
+// Fallback: Alpha Vantage — sequential with delay to avoid rate limiting
+async function fetchAVSingle(sym){
   try{
     const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
-    const d=await r.json();const q=d['Global Quote'];
+    const d=await r.json();
+    const q=d['Global Quote'];
     if(!q||!q['05. price']||parseFloat(q['05. price'])===0)return null;
-    return{price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),changePct:parseFloat(q['10. change percent']),src:'AV'};
+    return{price:parseFloat(q['05. price']),change:parseFloat(q['09. change']||0),changePct:parseFloat(q['10. change percent']||0),src:'AV'};
   }catch{return null;}
 }
 
-async function fetchFromYahoo(sym){
-  try{
-    const r=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=2d`,{headers:{'Accept':'application/json'}});
-    if(!r.ok)return null;
-    const d=await r.json();
-    const meta=d?.chart?.result?.[0]?.meta;
-    if(!meta||!meta.regularMarketPrice)return null;
-    const price=meta.regularMarketPrice;
-    const prev=meta.chartPreviousClose||meta.previousClose||price;
-    const change=price-prev;
-    const changePct=prev>0?(change/prev)*100:0;
-    return{price,change,changePct,src:'YF'};
-  }catch{return null;}
-}
-
-async function fetchFromFinnhub(sym){
-  try{
-    const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=d0ej9qhr01qgsie0gd9gd0ej9qhr01qgsie0gdg0`);
-    if(!r.ok)return null;
-    const d=await r.json();
-    if(!d.c||d.c===0)return null;
-    const price=d.c,prev=d.pc||d.c,change=d.d||price-prev,changePct=d.dp||(prev>0?(change/prev)*100:0);
-    return{price,change,changePct,src:'FH'};
-  }catch{return null;}
-}
-
-async function fetchPrice(sym,forceRefresh=false){
-  const now=Date.now();
-  if(!forceRefresh&&priceCache[sym]&&(now-cacheTime[sym])<120000)return priceCache[sym];
-  // Try all three sources in parallel, use first success
-  const [av,yf,fh]=await Promise.all([fetchFromAV(sym),fetchFromYahoo(sym),fetchFromFinnhub(sym)]);
-  const result=av||yf||fh||null;
-  if(result){priceCache[sym]=result;cacheTime[sym]=now;}
-  return result;
-}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
 async function refreshAllPrices(force=false){
-  const syms=[...new Set([...holdings.map(h=>h.sym),'QQQ','SPY','VIX','DIA'])];
-  await Promise.all(syms.map(async s=>{const d=await fetchPrice(s,force);if(d)prices[s]=d;}));
-  const now=new Date();
-  document.getElementById('lastUpdated').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const now=Date.now();
+  const CACHE_MS=force?0:120000;
+  const allSyms=[...new Set([...holdings.map(h=>h.sym),'QQQ','SPY','VIX','DIA'])];
+  const stale=allSyms.filter(s=>!cache[s]||(now-cache[s].ts)>CACHE_MS);
+  if(!stale.length)return;
+
+  // Step 1: try Yahoo batch for all stale symbols at once
+  const yahooResults=await fetchYahooBatch(stale);
+  stale.forEach(s=>{
+    if(yahooResults[s]){prices[s]=yahooResults[s];cache[s]={...yahooResults[s],ts:now};}
+  });
+
+  // Step 2: for any still missing, try AV one at a time with 500ms gap
+  const stillMissing=stale.filter(s=>!prices[s]||!prices[s].price);
+  for(let i=0;i<stillMissing.length;i++){
+    if(i>0)await sleep(500);
+    const d=await fetchAVSingle(stillMissing[i]);
+    if(d){prices[stillMissing[i]]=d;cache[stillMissing[i]]={...d,ts:now};}
+  }
+
+  document.getElementById('lastUpdated').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
 async function manualRefresh(){
   const btn=document.getElementById('refreshBtn');
   btn.disabled=true;btn.classList.add('spinning');
-  // Clear cache to force fresh fetch
-  priceCache={};cacheTime={};
+  cache={};
   await refreshAllPrices(true);
   renderAll();
   btn.disabled=false;btn.classList.remove('spinning');
 }
 
-// ── Sync status ───────────────────────────────────────────────────────
+// ── Supabase ──────────────────────────────────────────────────────────
 function setSyncStatus(s){
   const dot=document.getElementById('statusDot'),badge=document.getElementById('syncBadge');
   dot.className='status-dot '+(s==='ok'?'':s==='syncing'?'syncing':'offline');
   badge.className='sync-badge '+(s==='ok'?'ok':s==='syncing'?'syncing':'err');
   badge.textContent=s==='ok'?'synced':s==='syncing'?'syncing...':'offline';
 }
-
-// ── Supabase ──────────────────────────────────────────────────────────
 async function dbLoad(){
   setSyncStatus('syncing');
-  try{
-    const r=await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`,{headers:SB_HEADERS});
-    if(!r.ok)throw new Error();holdings=await r.json();setSyncStatus('ok');
-  }catch{setSyncStatus('error');holdings=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');}
+  try{const r=await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`,{headers:SB_HEADERS});if(!r.ok)throw 0;holdings=await r.json();setSyncStatus('ok');}
+  catch{setSyncStatus('error');holdings=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');}
 }
 async function dbAdd(h){try{await fetch(`${SB_URL}/rest/v1/holdings`,{method:'POST',headers:SB_HEADERS,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
 async function dbUpdate(h){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`,{method:'PATCH',headers:SB_HEADERS,body:JSON.stringify({shares:h.shares})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
 async function dbDelete(id){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});setSyncStatus('ok');}catch{setSyncStatus('error');}}
 
 // ── Render ────────────────────────────────────────────────────────────
-function srcTag(sym){
-  const s=prices[sym]?.src;if(!s)return'';
-  const cls=s==='AV'?'src-av':s==='YF'?'src-yf':'src-fh';
-  return`<span class="src-tag ${cls}">${s}</span>`;
-}
-
+function srcTag(sym){const s=prices[sym]?.src;if(!s)return'';return`<span class="src-tag src-${s.toLowerCase()}">${s}</span>`;}
 function renderTicker(){
   [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym])=>{
     const d=prices[sym];if(!d)return;
     document.getElementById(id+'Price').textContent='$'+d.price.toFixed(2);
-    const el=document.getElementById(id+'Chg');
-    el.textContent=(d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
+    const el=document.getElementById(id+'Chg');el.textContent=(d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
     el.className='t-chg '+(d.change>=0?'up':'dn');
   });
 }
-
 function calcTotal(){return holdings.reduce((s,h)=>{const p=prices[h.sym];return s+(p?p.price*h.shares:0);},0);}
 
 function renderAll(){
@@ -411,7 +396,7 @@ function renderHoldings(total){
     const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
     return`<tr>
       <td><div class="sym-cell"><span class="sym-badge">${h.sym}</span>${srcTag(h.sym)}${p?`<span style="font-size:11px;color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}</div></td>
-      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'<span style="color:var(--dim)">—</span>'}</td>
+      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'<span style="color:var(--dim)">fetching...</span>'}</td>
       <td class="td-mono" style="color:var(--muted)">${Number(h.shares).toLocaleString()}</td>
       <td class="td-mono${blurred?' blurred-val':''}" style="font-weight:500">${valStr}</td>
       <td><div class="pct-bar-wrap">${isWarn?'<span class="warn">⚠</span>':''}<span class="td-mono" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:34px;text-align:right${blurred?';filter:blur(7px)':''}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div></div></td>
@@ -451,7 +436,6 @@ function renderAlloc(total){
   list.innerHTML=sorted.map((item,i)=>`<div class="alloc-item"><div class="alloc-top"><span class="alloc-sym">${item.sym}</span><span class="alloc-pct${blurred?' blurred-val':''}">${item.pct.toFixed(1)}%</span></div><div class="alloc-track"><div class="alloc-fill" style="width:${item.pct}%;background:${item.pct>50?'var(--amber)':colors[i%colors.length]}"></div></div></div>`).join('');
 }
 
-// ── Add / Delete ──────────────────────────────────────────────────────
 async function addHolding(){
   const sym=document.getElementById('inpSym').value.trim().toUpperCase();
   const shares=parseFloat(document.getElementById('inpShares').value);
@@ -460,10 +444,13 @@ async function addHolding(){
   if(!sym){err.textContent='Enter a ticker symbol.';return;}
   if(!shares||shares<=0){err.textContent='Enter a valid share count.';return;}
   btn.disabled=true;btn.textContent='FETCHING...';
-  priceCache[sym]=null; // force fresh fetch for new ticker
-  const data=await fetchPrice(sym,true);
-  if(!data){err.textContent=`Could not fetch price for ${sym}. Check the ticker.`;btn.disabled=false;btn.textContent='+ ADD';return;}
-  prices[sym]=data;setSyncStatus('syncing');
+  delete cache[sym];delete prices[sym];
+  const yahooRes=await fetchYahooBatch([sym]);
+  if(yahooRes[sym])prices[sym]=yahooRes[sym];
+  else{const d=await fetchAVSingle(sym);if(d)prices[sym]=d;}
+  if(!prices[sym]){err.textContent=`Could not fetch price for ${sym}. Check the ticker.`;btn.disabled=false;btn.textContent='+ ADD';return;}
+  cache[sym]={...prices[sym],ts:Date.now()};
+  setSyncStatus('syncing');
   const existing=holdings.find(h=>h.sym===sym);
   if(existing){existing.shares=parseFloat(existing.shares)+shares;await dbUpdate(existing);}
   else{const h={id:Date.now().toString(),sym,shares};holdings.push(h);await dbAdd(h);}
@@ -477,18 +464,15 @@ async function deleteHolding(id){
   holdings=holdings.filter(h=>h.id!==id);setSyncStatus('syncing');
   await dbDelete(id);localStorage.setItem('portfolio_holdings_v2',JSON.stringify(holdings));renderAll();
 }
-
 function toggleBlur(){blurred=!blurred;document.getElementById('hideBtn').textContent=blurred?'[ SHOW ]':'[ HIDE ]';renderAll();}
-
 document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inpShares').focus();});
 document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
 
-// ── Init ──────────────────────────────────────────────────────────────
 async function initApp(){
   await dbLoad();
   await refreshAllPrices();
   renderAll();
-  setInterval(()=>refreshAllPrices().then(renderAll),120000);
+  setInterval(async()=>{await refreshAllPrices();renderAll();},120000);
   setInterval(async()=>{await dbLoad();renderAll();},30000);
 }
 </script>
