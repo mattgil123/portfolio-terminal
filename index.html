@@ -698,8 +698,8 @@ document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Ent
 document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
 
 // ── Margin Debt ───────────────────────────────────────────────────────
-const MARGIN_KEY='pt_margin'; // stored per portfolio: {portfolioId: amount}
-let marginData={};
+const MARGIN_KEY='pt_margin';
+var marginData={};
 
 function loadMargin(){
   try{marginData=JSON.parse(localStorage.getItem(MARGIN_KEY)||'{}');}catch{marginData={};}
