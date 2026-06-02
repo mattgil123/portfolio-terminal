@@ -447,18 +447,26 @@ document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target
 
 // ── Price APIs ────────────────────────────────────────────────────────
 async function fetchYahooBatch(syms){
-  try{
-    const joined=syms.join(',');
-    const url=`https://corsproxy.io/?${encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent`)}`;
-    const r=await fetch(url,{headers:{'Accept':'application/json'}});
-    if(!r.ok)return{};
-    const d=await r.json();
-    const results={};
-    (d?.quoteResponse?.result||[]).forEach(q=>{
-      if(q.regularMarketPrice)results[q.symbol]={price:q.regularMarketPrice,change:q.regularMarketChange||0,changePct:q.regularMarketChangePercent||0,src:'YF'};
-    });
-    return results;
-  }catch{return{};}
+  const joined=syms.join(',');
+  const yahooUrl=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent`;
+  const proxies=[
+    `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
+    `https://thingproxy.freeboard.io/fetch/${yahooUrl}`
+  ];
+  for(const url of proxies){
+    try{
+      const r=await fetch(url,{headers:{'Accept':'application/json'},signal:AbortSignal.timeout(6000)});
+      if(!r.ok)continue;
+      const d=await r.json();
+      const results={};
+      (d?.quoteResponse?.result||[]).forEach(q=>{
+        if(q.regularMarketPrice)results[q.symbol]={price:q.regularMarketPrice,change:q.regularMarketChange||0,changePct:q.regularMarketChangePercent||0,src:'YF'};
+      });
+      if(Object.keys(results).length>0)return results;
+    }catch{continue;}
+  }
+  return{};
 }
 async function fetchAVSingle(sym){
   try{
