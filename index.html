@@ -482,10 +482,10 @@ async function fetchTwelveData(sym){
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
 async function fetchWithFallback(sym){
-  // Try AV first, then Twelve Data
   const av=await fetchAVSingle(sym);
   if(av&&av.price>0)return av;
-  await sleep(200);
+  // AV rate limited or failed — try Twelve Data after a short wait
+  await sleep(500);
   const td=await fetchTwelveData(sym);
   if(td&&td.price>0)return td;
   return null;
@@ -501,9 +501,9 @@ async function refreshAllPrices(force=false){
   if(!stale.length)return;
 
   // Fetch 3 at a time with 2.5s gap — respects both AV (25/min) and TD (8/min)
-  const BATCH=3;
+  const BATCH=2;
   for(let i=0;i<stale.length;i+=BATCH){
-    if(i>0)await sleep(2500);
+    if(i>0)await sleep(3000);
     const batch=stale.slice(i,i+BATCH);
     await Promise.all(batch.map(async sym=>{
       const d=await fetchWithFallback(sym);
@@ -633,9 +633,8 @@ async function addHolding(){
   if(!shares||shares<=0){err.textContent='Enter a valid share count.';return;}
   btn.disabled=true;btn.textContent='FETCHING...';
   delete cache[sym];delete prices[sym];
-  const yr=await fetchYahooBatch([sym]);
-  if(yr[sym])prices[sym]=yr[sym];
-  else{const d=await fetchAVSingle(sym);if(d)prices[sym]=d;}
+  const d=await fetchWithFallback(sym);
+  if(d)prices[sym]=d;
   if(!prices[sym]){err.textContent=`Could not fetch price for ${sym}.`;btn.disabled=false;btn.textContent='+ ADD';return;}
   cache[sym]={...prices[sym],ts:Date.now()};
   setSyncStatus('syncing');
