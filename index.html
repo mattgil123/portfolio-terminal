@@ -117,7 +117,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .sym-cell{display:flex;align-items:center;gap:8px;}
 .sym-badge{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--text);}
 .src-tag{font-family:var(--mono);font-size:9px;padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.05);}
-.src-yf{color:#f5a623;}.src-av{color:#4d9fff;}
+.src-av{color:#4d9fff;}.src-td{color:#00d4aa;}
 .td-mono{font-family:var(--mono);font-size:12px;}
 .warn{color:var(--amber);font-size:12px;margin-right:3px;}
 .pct-bar-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
@@ -265,7 +265,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   <div class="refresh-footer">
     <div class="refresh-info">
       Last updated: <b id="lastUpdated">—</b><br>
-      <span class="src-note"><span class="src-yf">■ Yahoo Finance</span> &nbsp;<span class="src-av">■ Alpha Vantage</span></span>
+      <span class="src-note"><span class="src-av">■ Alpha Vantage</span> &nbsp;<span class="src-td">■ Twelve Data</span></span>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">
       <span class="spin">↻</span>&nbsp; Refresh Prices
@@ -445,38 +445,46 @@ function deletePortfolio(){
 document.getElementById('modalInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmModal();if(e.key==='Escape')closeModal();});
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
 
-// ── Price APIs ────────────────────────────────────────────────────────
-async function fetchYahooBatch(syms){
-  const joined=syms.join(',');
-  const yahooUrl=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent`;
-  const proxies=[
-    `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
-    `https://thingproxy.freeboard.io/fetch/${yahooUrl}`
-  ];
-  for(const url of proxies){
-    try{
-      const r=await fetch(url,{headers:{'Accept':'application/json'},signal:AbortSignal.timeout(6000)});
-      if(!r.ok)continue;
-      const d=await r.json();
-      const results={};
-      (d?.quoteResponse?.result||[]).forEach(q=>{
-        if(q.regularMarketPrice)results[q.symbol]={price:q.regularMarketPrice,change:q.regularMarketChange||0,changePct:q.regularMarketChangePercent||0,src:'YF'};
-      });
-      if(Object.keys(results).length>0)return results;
-    }catch{continue;}
-  }
-  return{};
-}
+// ── Price APIs (no proxy needed — all CORS-enabled) ──────────────────
+// Primary: Alpha Vantage — fetches up to 5 at a time with staggering
+// Secondary: Twelve Data — free, 800 calls/day, native CORS support
+
+const TD_KEY='demo'; // Twelve Data demo works for major US stocks
+
 async function fetchAVSingle(sym){
   try{
-    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
-    const d=await r.json();const q=d['Global Quote'];
+    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`,{signal:AbortSignal.timeout(8000)});
+    const d=await r.json();
+    const q=d['Global Quote'];
     if(!q||!q['05. price']||parseFloat(q['05. price'])===0)return null;
     return{price:parseFloat(q['05. price']),change:parseFloat(q['09. change']||0),changePct:parseFloat(q['10. change percent']||0),src:'AV'};
   }catch{return null;}
 }
+
+async function fetchTwelveData(sym){
+  try{
+    const r=await fetch(`https://api.twelvedata.com/quote?symbol=${sym}&apikey=${TD_KEY}`,{signal:AbortSignal.timeout(8000)});
+    const d=await r.json();
+    if(d.status==='error'||!d.close)return null;
+    const price=parseFloat(d.close);
+    const prev=parseFloat(d.previous_close||d.close);
+    const change=price-prev;
+    const changePct=prev>0?(change/prev)*100:0;
+    return{price,change,changePct,src:'TD'};
+  }catch{return null;}
+}
+
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+async function fetchWithFallback(sym){
+  // Try AV first, then Twelve Data
+  const av=await fetchAVSingle(sym);
+  if(av&&av.price>0)return av;
+  await sleep(200);
+  const td=await fetchTwelveData(sym);
+  if(td&&td.price>0)return td;
+  return null;
+}
 
 async function refreshAllPrices(force=false){
   const now=Date.now();const CACHE_MS=force?0:120000;
@@ -486,13 +494,18 @@ async function refreshAllPrices(force=false){
   ])];
   const stale=allSyms.filter(s=>!cache[s]||(now-cache[s].ts)>CACHE_MS);
   if(!stale.length)return;
-  const yahooResults=await fetchYahooBatch(stale);
-  stale.forEach(s=>{if(yahooResults[s]){prices[s]=yahooResults[s];cache[s]={...yahooResults[s],ts:now};}});
-  const stillMissing=stale.filter(s=>!prices[s]?.price);
-  for(let i=0;i<stillMissing.length;i++){
-    if(i>0)await sleep(500);
-    const d=await fetchAVSingle(stillMissing[i]);
-    if(d){prices[stillMissing[i]]=d;cache[stillMissing[i]]={...d,ts:now};}
+
+  // Fetch up to 5 in parallel, then stagger rest to avoid AV rate limit
+  const BATCH=5;
+  for(let i=0;i<stale.length;i+=BATCH){
+    if(i>0)await sleep(1200); // 1.2s between batches keeps AV under 25/min
+    const batch=stale.slice(i,i+BATCH);
+    await Promise.all(batch.map(async sym=>{
+      const d=await fetchWithFallback(sym);
+      if(d){prices[sym]=d;cache[sym]={...d,ts:now};}
+    }));
+    // Render after each batch so prices appear progressively
+    renderAll();
   }
   document.getElementById('lastUpdated').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
@@ -515,7 +528,7 @@ async function dbUpdate(h){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h
 async function dbDelete(id){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});setSyncStatus('ok');}catch{setSyncStatus('error');}}
 
 // ── Render ────────────────────────────────────────────────────────────
-function srcTag(sym){const s=prices[sym]?.src;if(!s)return'';return`<span class="src-tag src-${s.toLowerCase()}">${s}</span>`;}
+function srcTag(sym){const s=prices[sym]?.src;if(!s)return'';const cls=s==='AV'?'src-av':s==='TD'?'src-td':'src-av';return`<span class="src-tag ${cls}">${s}</span>`;}
 
 function renderTicker(){
   [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym])=>{
