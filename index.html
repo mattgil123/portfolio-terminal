@@ -54,11 +54,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 /* ── Tabs ── */
 .tabs-row{display:flex;align-items:center;gap:0;margin-bottom:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;overflow-x:auto;scrollbar-width:none;}
 .tabs-row::-webkit-scrollbar{display:none;}
-.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:7px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all 0.15s;white-space:nowrap;min-height:34px;}
-.tab-btn:hover{color:var(--text);}
-.tab-btn.active{background:var(--bg3);color:var(--green);border:1px solid var(--border2);}
-.tab-btn .tab-bal{display:block;font-size:9px;color:var(--dim);margin-top:2px;letter-spacing:0.5px;}
-.tab-btn.active .tab-bal{color:var(--muted);}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:7px;border:1px solid transparent;cursor:pointer;background:rgba(255,255,255,0.04);color:var(--text);transition:all 0.15s;white-space:nowrap;min-height:34px;}
+.tab-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);border-color:var(--border2);}
+.tab-btn.active{background:var(--bg3);color:var(--green);border:1px solid var(--green2);box-shadow:0 0 8px rgba(0,212,170,0.15);}
+.tab-btn .tab-bal{display:block;font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;}
+.tab-btn.active .tab-bal{color:var(--green2);}
 .tab-add-btn{font-family:var(--mono);font-size:13px;padding:6px 12px;border-radius:7px;border:1px dashed var(--border2);cursor:pointer;background:transparent;color:var(--dim);transition:all 0.15s;white-space:nowrap;min-height:34px;margin-left:4px;}
 .tab-add-btn:hover{color:var(--green);border-color:var(--green);}
 .tab-rename-btn{font-family:var(--mono);font-size:9px;color:var(--dim);background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:3px;margin-left:4px;vertical-align:middle;}
@@ -171,6 +171,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .modal-cancel{flex:1;font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:10px;border-radius:6px;cursor:pointer;}
 .modal-del{width:100%;font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.08);border:1px solid rgba(255,77,106,0.3);color:var(--red);padding:10px;border-radius:6px;cursor:pointer;margin-top:8px;letter-spacing:1px;}
 
+.margin-section{margin-top:10px;background:var(--bg2);border:1px solid rgba(255,77,106,0.25);border-radius:10px;padding:14px 16px;}
+.margin-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.margin-title{font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;}
+.margin-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;}
+.margin-right{display:flex;align-items:center;gap:10px;}
+.margin-amount{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--red);}
+.margin-amount.blurred-val{filter:blur(7px);}
+.margin-edit-btn{font-family:var(--mono);font-size:10px;background:none;border:1px solid var(--border2);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;letter-spacing:1px;}
+.margin-edit-btn:hover{border-color:var(--red);color:var(--red);}
+.margin-edit-row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;}
+.margin-input{font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:6px;outline:none;width:160px;min-height:40px;}
+.margin-input:focus{border-color:var(--red);}
+.margin-save-btn{font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.1);border:1px solid rgba(255,77,106,0.4);color:var(--red);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
+.margin-clear-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
 .loading-msg,.empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
 
 @media(max-width:640px){
@@ -261,6 +275,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
       <button class="add-btn" id="addBtn" onclick="addHolding()">+ ADD</button>
     </div>
     <div class="err-msg" id="errMsg"></div>
+  </div>
+
+  <!-- Margin Debt (Trading tab only) -->
+  <div class="margin-section" id="marginSection" style="display:none">
+    <div class="margin-header">
+      <div>
+        <div class="margin-title">Margin Debt</div>
+        <div class="margin-sub">Subtracted from Trading balance</div>
+      </div>
+      <div class="margin-right">
+        <span class="margin-amount" id="marginAmount">—</span>
+        <button class="margin-edit-btn" id="marginEditBtn" onclick="toggleMarginEdit()">edit</button>
+      </div>
+    </div>
+    <div class="margin-edit-row" id="marginEditRow" style="display:none">
+      <input class="margin-input" id="marginInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal" />
+      <button class="margin-save-btn" onclick="saveMargin()">Save</button>
+      <button class="margin-clear-btn" onclick="clearMargin()">Clear</button>
+    </div>
   </div>
 
   <div class="refresh-footer">
@@ -371,14 +404,15 @@ function tabTotal(pid){
   const h=allHoldings[pid]||[];
   return h.reduce((s,h)=>{const p=prices[h.sym];return s+(p?p.price*h.shares:0);},0);
 }
-function combinedTotal(){return portfolios.reduce((s,p)=>s+tabTotal(p.id),0);}
+function tabNet(pid){return Math.max(0,tabTotal(pid)-getMargin(pid));}
+function combinedTotal(){return portfolios.reduce((s,p)=>s+tabNet(p.id),0);}
 
 // ── Tabs render ───────────────────────────────────────────────────────
 function renderTabs(){
   const row=document.getElementById('tabsRow');
   row.innerHTML='';
   portfolios.forEach(p=>{
-    const t=tabTotal(p.id);
+    const t=tabNet(p.id);
     const valStr=t>0?(blurred?'••••••':'$'+t.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})):'';
     const btn=document.createElement('button');
     btn.className='tab-btn'+(p.id===activePortfolioId?' active':'');
@@ -547,8 +581,11 @@ function renderTicker(){
 function renderAll(){
   renderTabs();
   renderTicker();
+  renderMargin();
   const holdings=currentHoldings();
-  const total=tabTotal(activePortfolioId);
+  const gross=tabTotal(activePortfolioId);
+  const margin=getMargin(activePortfolioId);
+  const total=Math.max(0,gross-margin);
   const combined=combinedTotal();
   const activeName=portfolios.find(p=>p.id===activePortfolioId)?.name||'Portfolio';
 
@@ -560,17 +597,20 @@ function renderAll(){
   balEl.textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   balEl.className='bal-amount'+(blurred?' blurred':'');
 
-  // Show combined total if >1 portfolio
+  // Show combined total (using net values) if >1 portfolio
   const combEl=document.getElementById('combinedBal');
   if(portfolios.length>1){
+    const netCombined=portfolios.reduce((s,p)=>{
+      const g=tabTotal(p.id);const m=getMargin(p.id);return s+Math.max(0,g-m);
+    },0);
     combEl.style.display='';
-    combEl.textContent='All: $'+combined.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+    combEl.textContent='All: $'+netCombined.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
     combEl.className='bal-combined'+(blurred?' blurred-val':'');
   } else {combEl.style.display='none';}
 
-  renderHoldings(holdings,total);
-  renderMobileCards(holdings,total);
-  renderAlloc(holdings,total);
+  renderHoldings(holdings,gross);
+  renderMobileCards(holdings,gross);
+  renderAlloc(holdings,gross);
 }
 
 function renderHoldings(holdings,total){
@@ -657,8 +697,71 @@ function toggleBlur(){blurred=!blurred;document.getElementById('hideBtn').textCo
 document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inpShares').focus();});
 document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
 
+// ── Margin Debt ───────────────────────────────────────────────────────
+const MARGIN_KEY='pt_margin'; // stored per portfolio: {portfolioId: amount}
+let marginData={};
+
+function loadMargin(){
+  try{marginData=JSON.parse(localStorage.getItem(MARGIN_KEY)||'{}');}catch{marginData={};}
+}
+function saveMarginData(){localStorage.setItem(MARGIN_KEY,JSON.stringify(marginData));}
+
+function getMargin(pid){return parseFloat(marginData[pid]||0);}
+
+function toggleMarginEdit(){
+  const row=document.getElementById('marginEditRow');
+  const showing=row.style.display!=='none';
+  row.style.display=showing?'none':'flex';
+  if(!showing){
+    const cur=getMargin(activePortfolioId);
+    document.getElementById('marginInput').value=cur>0?cur:'';
+    document.getElementById('marginInput').focus();
+  }
+}
+
+function saveMargin(){
+  const val=parseFloat(document.getElementById('marginInput').value)||0;
+  marginData[activePortfolioId]=val;
+  saveMarginData();
+  document.getElementById('marginEditRow').style.display='none';
+  renderAll();
+}
+
+function clearMargin(){
+  delete marginData[activePortfolioId];
+  saveMarginData();
+  document.getElementById('marginInput').value='';
+  document.getElementById('marginEditRow').style.display='none';
+  renderAll();
+}
+
+document.getElementById('marginInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')saveMargin();
+  if(e.key==='Escape'){document.getElementById('marginEditRow').style.display='none';}
+});
+
+function renderMargin(){
+  const isTrading=activePortfolioId==='trading'||portfolios.find(p=>p.id===activePortfolioId)?.name?.toLowerCase().includes('trading');
+  const section=document.getElementById('marginSection');
+  // Show margin section on ALL portfolios (user can choose to use it)
+  section.style.display='';
+  const margin=getMargin(activePortfolioId);
+  const amtEl=document.getElementById('marginAmount');
+  if(margin>0){
+    amtEl.textContent='-$'+margin.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    amtEl.className='margin-amount'+(blurred?' blurred-val':'');
+  } else {
+    amtEl.textContent='None';
+    amtEl.className='margin-amount';
+    amtEl.style.color='var(--dim)';
+    amtEl.style.fontSize='14px';
+  }
+  if(margin>0){amtEl.style.color='var(--red)';amtEl.style.fontSize='20px';}
+}
+
 // ── Init ──────────────────────────────────────────────────────────────
 async function initApp(){
+  loadMargin();
   await loadPortfolios();
   await loadAllHoldings();
   await refreshAllPrices();
