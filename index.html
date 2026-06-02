@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Portfolio" />
 <meta name="theme-color" content="#0a0c10" />
@@ -449,7 +450,7 @@ document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target
 // Primary: Alpha Vantage — fetches up to 5 at a time with staggering
 // Secondary: Twelve Data — free, 800 calls/day, native CORS support
 
-const TD_KEY='demo'; // Twelve Data demo works for major US stocks
+const TD_KEY='a6d8373b36b54ce0bf2ee27822d28d39';
 
 async function fetchAVSingle(sym){
   try{
