@@ -462,9 +462,13 @@ async function fetchAVSingle(sym){
   }catch{return null;}
 }
 
+// TD symbol map for indices
+const TD_SYM={'VIX':'^VIX'};
 async function fetchTwelveData(sym){
   try{
-    const r=await fetch(`https://api.twelvedata.com/quote?symbol=${sym}&apikey=${TD_KEY}`,{signal:AbortSignal.timeout(8000)});
+    const tdSym=TD_SYM[sym]||sym;
+    const r=await fetch(`https://api.twelvedata.com/quote?symbol=${tdSym}&apikey=${TD_KEY}`,{signal:AbortSignal.timeout(8000)});
+    if(r.status===429||r.status===404)return null;
     const d=await r.json();
     if(d.status==='error'||!d.close)return null;
     const price=parseFloat(d.close);
@@ -496,10 +500,10 @@ async function refreshAllPrices(force=false){
   const stale=allSyms.filter(s=>!cache[s]||(now-cache[s].ts)>CACHE_MS);
   if(!stale.length)return;
 
-  // Fetch up to 5 in parallel, then stagger rest to avoid AV rate limit
-  const BATCH=5;
+  // Fetch 3 at a time with 2.5s gap — respects both AV (25/min) and TD (8/min)
+  const BATCH=3;
   for(let i=0;i<stale.length;i+=BATCH){
-    if(i>0)await sleep(1200); // 1.2s between batches keeps AV under 25/min
+    if(i>0)await sleep(2500);
     const batch=stale.slice(i,i+BATCH);
     await Promise.all(batch.map(async sym=>{
       const d=await fetchWithFallback(sym);
