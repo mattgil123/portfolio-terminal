@@ -322,7 +322,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 </div>
 
 <script>
-const AV_KEY='ATLY8E0ZH2SYPTOA';
+const AV_KEY='W0ZW9BEBW3L5CB0L';
 const SB_URL='https://zekusnkejcyjwermbdgb.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
 const SB_HEADERS={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
@@ -552,7 +552,7 @@ async function fetchAVSingle(sym){
 }
 
 async function refreshAllPrices(force=false){
-  const now=Date.now();const CACHE_MS=force?0:120000;
+  const now=Date.now();const CACHE_MS=force?0:300000;
   const allSyms=[...new Set([
     ...Object.values(allHoldings).flat().map(h=>h.sym),
     'QQQ','SPY','VIX','DIA'
@@ -797,8 +797,14 @@ async function initApp(){
   await loadAllHoldings();
   await refreshAllPrices();
   renderAll();
-  setInterval(async()=>{await refreshAllPrices();renderAll();},120000);
-  setInterval(async()=>{await loadAllHoldings();renderAll();},30000);
+  // Only refresh prices when tab is visible, every 5 min
+  setInterval(async()=>{
+    if(!document.hidden){await refreshAllPrices();renderAll();}
+  },300000);
+  // Sync holdings every 60s, but only when visible
+  setInterval(async()=>{
+    if(!document.hidden){await loadAllHoldings();renderAll();}
+  },60000);
 }
 </script>
 </body>
