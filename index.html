@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Portfolio" />
-<meta name="theme-color" content="#0a0c10" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Portfolio"/>
+<meta name="theme-color" content="#0a0c10"/>
 <title>Portfolio Terminal</title>
-<!-- build: 2026-06-04T21:34:13.021408 -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
-:root {
+:root{
   --bg:#0a0c10;--bg2:#111418;--bg3:#181c22;--border:#1e2530;--border2:#2a3340;
   --green:#00d4aa;--green2:#00a882;--red:#ff4d6a;--amber:#f5a623;
   --text:#e8edf4;--muted:#6b7a8d;--dim:#3a4454;
@@ -24,65 +23,63 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 /* ── Login ── */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+#loginScreen.hidden{display:none;}
 .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px 32px;width:100%;max-width:360px;}
 .login-logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
 .login-logo span{color:var(--dim);}
 .login-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
-.login-input{width:100%;font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:6px;outline:none;transition:border-color 0.15s;margin-bottom:14px;}
+.login-input{width:100%;font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:6px;outline:none;margin-bottom:14px;}
 .login-input:focus{border-color:var(--green);}
-.login-btn{width:100%;font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:12px;border-radius:6px;cursor:pointer;letter-spacing:2px;transition:all 0.15s;text-transform:uppercase;}
+.login-btn{width:100%;font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:12px;border-radius:6px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;}
 .login-btn:hover{background:rgba(0,212,170,0.2);}
 .login-err{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:10px;min-height:16px;text-align:center;}
 .login-attempts{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:16px;text-align:center;}
-#loginScreen.hidden{display:none;}
+
+/* ── App ── */
 #appScreen{display:none;}
 #appScreen.visible{display:block;}
-
-/* ── Layout ── */
 .wrap{max-width:1100px;margin:0 auto;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));padding-top:calc(16px + env(safe-area-inset-top));}
+
+/* ── Header ── */
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .logo{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:2px;text-transform:uppercase;}
 .logo span{color:var(--dim);}
 .header-right{display:flex;align-items:center;gap:10px;}
-.hide-btn,.lock-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 12px;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;}
-.hide-btn:hover{border-color:var(--green);color:var(--green);}
-.lock-btn:hover{border-color:var(--amber);color:var(--amber);}
+.hdr-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 12px;border-radius:4px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;}
+.hdr-btn:hover{border-color:var(--green);color:var(--green);}
+.hdr-btn.lock:hover{border-color:var(--amber);color:var(--amber);}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0;}
-.status-dot.offline{background:var(--red);box-shadow:0 0 6px var(--red);animation:none;}
 .status-dot.syncing{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.status-dot.offline{background:var(--red);box-shadow:0 0 6px var(--red);animation:none;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
 /* ── Tabs ── */
-.tabs-row{display:flex;align-items:center;gap:0;margin-bottom:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;overflow-x:auto;scrollbar-width:none;}
+.tabs-row{display:flex;align-items:center;margin-bottom:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;overflow-x:auto;scrollbar-width:none;gap:2px;}
 .tabs-row::-webkit-scrollbar{display:none;}
-.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:7px;border:1px solid transparent;cursor:pointer;background:rgba(255,255,255,0.04);color:var(--text);transition:all 0.15s;white-space:nowrap;min-height:34px;}
-.tab-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);border-color:var(--border2);}
-.tab-btn.active{background:var(--bg3);color:var(--green);border:1px solid var(--green2);box-shadow:0 0 8px rgba(0,212,170,0.15);}
-.tab-btn .tab-bal{display:block;font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:7px;border:1px solid transparent;cursor:pointer;background:rgba(255,255,255,0.04);color:var(--text);white-space:nowrap;min-height:34px;transition:all 0.15s;}
+.tab-btn:hover{background:rgba(255,255,255,0.08);border-color:var(--border2);}
+.tab-btn.active{background:var(--bg3);color:var(--green);border-color:var(--green2);box-shadow:0 0 8px rgba(0,212,170,0.15);}
+.tab-btn .tab-bal{display:block;font-size:9px;color:var(--muted);margin-top:2px;}
 .tab-btn.active .tab-bal{color:var(--green2);}
-.tab-add-btn{font-family:var(--mono);font-size:13px;padding:6px 12px;border-radius:7px;border:1px dashed var(--border2);cursor:pointer;background:transparent;color:var(--dim);transition:all 0.15s;white-space:nowrap;min-height:34px;margin-left:4px;}
-.tab-add-btn:hover{color:var(--green);border-color:var(--green);}
-.tab-rename-btn{font-family:var(--mono);font-size:9px;color:var(--dim);background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:3px;margin-left:4px;vertical-align:middle;}
-.tab-rename-btn:hover{color:var(--green);}
+.tab-add{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:7px;border:1px dashed var(--border2);cursor:pointer;background:transparent;color:var(--dim);min-height:34px;transition:all 0.15s;margin-left:2px;}
+.tab-add:hover{color:var(--green);border-color:var(--green);}
 
 /* ── Balance ── */
-.balance-section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;}
+.balance-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;}
 .bal-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .sync-badge{font-size:10px;padding:2px 7px;border-radius:3px;font-family:var(--mono);}
 .sync-badge.ok{color:var(--green);background:rgba(0,212,170,0.1);}
 .sync-badge.err{color:var(--red);background:rgba(255,77,106,0.1);}
 .sync-badge.syncing{color:var(--amber);background:rgba(245,166,35,0.1);}
-.bal-row{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;}
-.bal-amount{font-family:var(--mono);font-size:36px;font-weight:600;color:var(--text);line-height:1;transition:filter 0.3s;}
-.bal-amount.blurred,.blurred-val{filter:blur(7px);user-select:none;}
+.bal-row{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.bal-amount{font-family:var(--mono);font-size:36px;font-weight:600;color:var(--text);line-height:1;}
 .bal-combined{font-family:var(--mono);font-size:13px;color:var(--muted);padding:4px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;}
-.bal-combined.blurred-val{filter:blur(7px);}
 
 /* ── Ticker ── */
 .ticker-strip{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .ticker-strip::-webkit-scrollbar{display:none;}
 .ticker-inner{display:flex;align-items:center;gap:16px;white-space:nowrap;min-width:max-content;}
-.ticker-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px;flex-shrink:0;}
+.ticker-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px;}
 .ticker-items{display:flex;gap:20px;align-items:center;}
 .t-item{display:flex;align-items:center;gap:8px;}
 .t-sym{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);}
@@ -91,69 +88,90 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .t-chg.up{color:var(--green);background:rgba(0,212,170,0.08);}
 .t-chg.dn{color:var(--red);background:rgba(255,77,106,0.08);}
 
-/* ── Holdings ── */
+/* ── Main grid ── */
 .cols{display:grid;grid-template-columns:1fr 240px;gap:10px;}
-.holdings-card,.alloc-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 .card-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:12px 16px 10px;border-bottom:1px solid var(--border);}
-.holdings-table{width:100%;border-collapse:collapse;}
-.holdings-table th{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg3);}
-.holdings-table th:last-child,.holdings-table td:last-child{text-align:right;}
-.holdings-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
-.holdings-table tr:last-child td{border-bottom:none;}
-.holdings-table tr:hover td{background:var(--bg3);}
-.holding-cards{display:none;padding:8px;}
-.holding-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
-.holding-card:last-child{margin-bottom:0;}
-.hc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.hc-sym{font-family:var(--mono);font-weight:600;font-size:16px;color:var(--text);}
-.hc-chg{font-family:var(--mono);font-size:12px;margin-top:2px;}
-.hc-value{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text);text-align:right;}
-.hc-value-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;}
-.hc-bottom{display:flex;justify-content:space-between;align-items:center;}
-.hc-alloc{display:flex;align-items:center;gap:8px;}
-.hc-pct{font-family:var(--mono);font-size:12px;}
-.hc-bar-track{width:60px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
-.hc-bar-fill{height:100%;border-radius:2px;}
-.hc-del{background:none;border:1px solid var(--border2);color:var(--dim);cursor:pointer;font-size:14px;padding:6px 10px;border-radius:6px;min-width:36px;min-height:36px;}
-.hc-del:active{color:var(--red);border-color:var(--red);}
-.sym-cell{display:flex;align-items:center;gap:8px;}
+
+/* ── Holdings table ── */
+.htable{width:100%;border-collapse:collapse;}
+.htable th{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg3);}
+.htable th:last-child,.htable td:last-child{text-align:right;}
+.htable td{padding:10px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.htable tr:last-child td{border-bottom:none;}
+.htable tr:hover td{background:var(--bg3);}
+.sym-cell{display:flex;align-items:center;gap:6px;}
 .sym-badge{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--text);}
-.src-tag{font-family:var(--mono);font-size:9px;padding:1px 4px;border-radius:2px;background:rgba(255,255,255,0.05);}
-.src-av{color:#4d9fff;}.src-td{color:#00d4aa;}
 .td-mono{font-family:var(--mono);font-size:12px;}
-.warn{color:var(--amber);font-size:12px;margin-right:3px;}
-.pct-bar-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
+.warn{color:var(--amber);font-size:11px;}
+.pct-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
 .pct-bar{height:3px;border-radius:2px;background:var(--green);flex-shrink:0;}
 .pct-bar.warn-bar{background:var(--amber);}
-.del-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:2px 4px;border-radius:3px;line-height:1;}
+.del-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:2px 6px;line-height:1;}
 .del-btn:hover{color:var(--red);}
+
+/* ── Mobile cards ── */
+.hcards{display:none;padding:8px;}
+.hcard{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+.hcard:last-child{margin-bottom:0;}
+.hcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.hcard-sym{font-family:var(--mono);font-weight:600;font-size:16px;}
+.hcard-chg{font-family:var(--mono);font-size:12px;margin-top:2px;}
+.hcard-val{font-family:var(--mono);font-size:18px;font-weight:600;text-align:right;}
+.hcard-shares{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;}
+.hcard-bot{display:flex;justify-content:space-between;align-items:center;}
+.hcard-pct{font-family:var(--mono);font-size:12px;}
+.bar-track{width:60px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:2px;}
+.hcard-del{background:none;border:1px solid var(--border2);color:var(--dim);cursor:pointer;font-size:14px;padding:6px 10px;border-radius:6px;min-width:36px;min-height:36px;}
+.hcard-del:active{color:var(--red);border-color:var(--red);}
+
+/* ── Allocation ── */
 .alloc-list{padding:8px 0;}
 .alloc-item{padding:8px 16px;}
-.alloc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.alloc-sym{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);}
+.alloc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.alloc-sym{font-family:var(--mono);font-size:12px;font-weight:600;}
 .alloc-pct{font-family:var(--mono);font-size:12px;color:var(--muted);}
 .alloc-track{height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
-.alloc-fill{height:100%;border-radius:2px;transition:width 0.6s ease;}
+.alloc-fill{height:100%;border-radius:2px;transition:width 0.5s ease;}
 
 /* ── Add section ── */
 .add-section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:10px;}
 .add-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px;}
 .add-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.add-row input{font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 12px;border-radius:6px;outline:none;transition:border-color 0.15s;min-height:44px;}
+.add-row input{font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 12px;border-radius:6px;outline:none;min-height:44px;}
 .add-row input:focus{border-color:var(--green);}
 .inp-sym{width:90px;text-transform:uppercase;}
 .inp-shares{width:110px;}
-.add-btn{font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px 18px;border-radius:6px;cursor:pointer;letter-spacing:1px;white-space:nowrap;min-height:44px;}
-.add-btn:active{background:rgba(0,212,170,0.25);}
+.add-btn{font-family:var(--mono);font-size:12px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px 18px;border-radius:6px;cursor:pointer;min-height:44px;white-space:nowrap;}
 .add-btn:disabled{opacity:0.4;cursor:not-allowed;}
 .err-msg{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:8px;min-height:16px;}
 
+/* ── Adjustments (margin/cash) ── */
+.adj-section{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.adj-card{background:var(--bg2);border-radius:10px;padding:14px 16px;}
+.adj-card.margin-card{border:1px solid rgba(255,77,106,0.3);}
+.adj-card.cash-card{border:1px solid rgba(0,212,170,0.3);}
+.adj-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.adj-card.margin-card .adj-label{color:var(--red);}
+.adj-card.cash-card .adj-label{color:var(--green);}
+.adj-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:10px;}
+.adj-display{display:flex;align-items:center;justify-content:space-between;}
+.adj-amount{font-family:var(--mono);font-size:18px;font-weight:600;}
+.adj-edit-btn{font-family:var(--mono);font-size:10px;background:none;border:1px solid var(--border2);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;}
+.adj-edit-btn:hover{border-color:var(--green);color:var(--green);}
+.adj-input-row{display:flex;gap:6px;align-items:center;margin-top:10px;display:none;}
+.adj-input{font-family:var(--mono);font-size:13px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:7px 10px;border-radius:6px;outline:none;flex:1;min-height:36px;}
+.adj-save{font-family:var(--mono);font-size:10px;padding:7px 12px;border-radius:6px;cursor:pointer;min-height:36px;border:none;}
+.margin-card .adj-save{background:rgba(255,77,106,0.15);color:var(--red);}
+.cash-card .adj-save{background:rgba(0,212,170,0.15);color:var(--green);}
+.adj-clear{font-family:var(--mono);font-size:10px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:7px 10px;border-radius:6px;cursor:pointer;min-height:36px;}
+
 /* ── Refresh footer ── */
-.refresh-footer{margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.refresh-info{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;}
+.refresh-footer{margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.refresh-info{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.8;}
 .refresh-info b{color:var(--text);}
-.refresh-info .src-note{font-size:10px;color:var(--dim);}
-.refresh-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;letter-spacing:1px;transition:all 0.15s;min-height:36px;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.refresh-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;min-height:36px;white-space:nowrap;}
 .refresh-btn:hover{border-color:var(--green);color:var(--green);}
 .refresh-btn:disabled{opacity:0.4;cursor:not-allowed;}
 .spin{display:inline-block;}
@@ -168,35 +186,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .modal-input{width:100%;font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 12px;border-radius:6px;outline:none;margin-bottom:14px;}
 .modal-input:focus{border-color:var(--green);}
 .modal-btns{display:flex;gap:8px;}
-.modal-ok{flex:1;font-family:var(--mono);font-size:11px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px;border-radius:6px;cursor:pointer;letter-spacing:1px;}
+.modal-ok{flex:1;font-family:var(--mono);font-size:11px;background:rgba(0,212,170,0.1);border:1px solid var(--green2);color:var(--green);padding:10px;border-radius:6px;cursor:pointer;}
 .modal-cancel{flex:1;font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:10px;border-radius:6px;cursor:pointer;}
-.modal-del{width:100%;font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.08);border:1px solid rgba(255,77,106,0.3);color:var(--red);padding:10px;border-radius:6px;cursor:pointer;margin-top:8px;letter-spacing:1px;}
+.modal-del{width:100%;font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.08);border:1px solid rgba(255,77,106,0.3);color:var(--red);padding:10px;border-radius:6px;cursor:pointer;margin-top:8px;}
 
-.margin-section{margin-top:10px;background:var(--bg2);border:1px solid rgba(255,77,106,0.25);border-radius:10px;padding:14px 16px;}
-.margin-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.margin-title{font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;}
-.margin-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;}
-.margin-right{display:flex;align-items:center;gap:10px;}
-.margin-amount{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--red);}
-.margin-amount.blurred-val{filter:blur(7px);}
-.margin-edit-btn{font-family:var(--mono);font-size:10px;background:none;border:1px solid var(--border2);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;letter-spacing:1px;}
-.margin-edit-btn:hover{border-color:var(--red);color:var(--red);}
-.margin-edit-row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;}
-.margin-input{font-family:var(--mono);font-size:14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 12px;border-radius:6px;outline:none;width:160px;min-height:40px;}
-.margin-input:focus{border-color:var(--red);}
-.margin-save-btn{font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.1);border:1px solid rgba(255,77,106,0.4);color:var(--red);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
-.margin-clear-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
-.cash-amount{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--green);}
-.loading-msg,.empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
+.blurred,.blurred-val{filter:blur(7px);user-select:none;}
+.empty-state,.loading-msg{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
 
 @media(max-width:640px){
   .bal-amount{font-size:26px;}
   .cols{grid-template-columns:1fr;}
-  .holdings-table,.holdings-table thead,.holdings-table tbody,.holdings-table tr{display:none;}
-  .holding-cards{display:block;}
+  .htable,.htable thead,.htable tbody,.htable tr{display:none;}
+  .hcards{display:block;}
+  .adj-section{grid-template-columns:1fr;}
   .add-row{flex-direction:column;align-items:stretch;}
-  .inp-sym,.inp-shares{width:100%;}
-  .add-btn{width:100%;}
+  .inp-sym,.inp-shares,.add-btn{width:100%;}
   .refresh-footer{flex-direction:column;}
   .refresh-btn{justify-content:center;}
 }
@@ -204,36 +208,34 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 </head>
 <body>
 
-<!-- Login -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
     <div class="login-label">Password</div>
-    <input class="login-input" type="password" id="pwInput" placeholder="Enter password" autocomplete="current-password" />
-    <button class="login-btn" onclick="attemptLogin()">Unlock</button>
+    <input class="login-input" id="pwInput" type="password" placeholder="Enter password" autocomplete="current-password"/>
+    <button class="login-btn" id="loginBtn">Unlock</button>
     <div class="login-err" id="loginErr"></div>
     <div class="login-attempts" id="loginAttempts"></div>
   </div>
 </div>
 
-<!-- App -->
 <div id="appScreen">
 <div class="wrap">
+
   <div class="header">
     <div class="logo"><span>//</span> PORTFOLIO <span>·</span> TERMINAL</div>
     <div class="header-right">
       <div class="status-dot" id="statusDot"></div>
-      <button class="hide-btn" id="hideBtn" onclick="toggleBlur()">[ HIDE ]</button>
-      <button class="lock-btn" onclick="lockApp()">[ LOCK ]</button>
+      <button class="hdr-btn" id="hideBtn">[ HIDE ]</button>
+      <button class="hdr-btn lock" id="lockBtn">[ LOCK ]</button>
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs-row" id="tabsRow"></div>
 
-  <div class="balance-section">
+  <div class="balance-card">
     <div class="bal-label">
-      <span id="balLabel">Portfolio</span>
+      <span id="balLabel">Balance</span>
       <span class="sync-badge syncing" id="syncBadge">connecting...</span>
     </div>
     <div class="bal-row">
@@ -255,570 +257,565 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   </div>
 
   <div class="cols">
-    <div class="holdings-card">
-      <div class="card-title" id="holdingsCardTitle">Holdings</div>
-      <table class="holdings-table">
-        <thead><tr><th>Symbol</th><th>Price</th><th>Shares</th><th>Value</th><th>Alloc %</th><th></th></tr></thead>
-        <tbody id="holdingsBody"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
+    <div class="card">
+      <div class="card-title" id="holdingsTitle">Holdings</div>
+      <table class="htable">
+        <thead><tr><th>Symbol</th><th>Price</th><th>Shares</th><th>Value</th><th>Alloc%</th><th></th></tr></thead>
+        <tbody id="holdingsBody"></tbody>
       </table>
-      <div class="holding-cards" id="holdingCards"><div class="empty-state">Loading...</div></div>
+      <div class="hcards" id="holdingCards"></div>
     </div>
-    <div class="alloc-card">
+    <div class="card">
       <div class="card-title">Allocation</div>
-      <div class="alloc-list" id="allocList"><div class="loading-msg">Loading...</div></div>
+      <div class="alloc-list" id="allocList"></div>
     </div>
   </div>
 
   <div class="add-section">
     <div class="add-title" id="addTitle">ADD POSITION</div>
     <div class="add-row">
-      <input class="inp-sym" id="inpSym" type="text" placeholder="TICKER" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" />
-      <input class="inp-shares" id="inpShares" type="number" placeholder="Shares" min="0.001" step="any" inputmode="decimal" />
-      <button class="add-btn" id="addBtn" onclick="addHolding()">+ ADD</button>
+      <input class="inp-sym" id="inpSym" type="text" placeholder="TICKER" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
+      <input class="inp-shares" id="inpShares" type="number" placeholder="Shares" min="0.001" step="any" inputmode="decimal"/>
+      <button class="add-btn" id="addBtn">+ ADD</button>
     </div>
     <div class="err-msg" id="errMsg"></div>
   </div>
 
-  <!-- Margin Debt (Trading tab only) -->
-  <div class="margin-section" id="marginSection">
-    <div class="margin-header">
-      <div>
-        <div class="margin-title">Margin Debt</div>
-        <div class="margin-sub">Subtracted from Trading balance</div>
+  <div class="adj-section">
+    <div class="adj-card margin-card">
+      <div class="adj-label">Margin Debt</div>
+      <div class="adj-sub">Subtracted from balance</div>
+      <div class="adj-display">
+        <span class="adj-amount" id="marginAmt" style="color:var(--dim);font-size:14px;">None</span>
+        <button class="adj-edit-btn" id="marginEditBtn">edit</button>
       </div>
-      <div class="margin-right">
-        <span class="margin-amount" id="marginAmount">—</span>
-        <button class="margin-edit-btn" id="marginEditBtn" onclick="toggleMarginEdit()">edit</button>
-      </div>
-    </div>
-    <div class="margin-edit-row" id="marginEditRow" style="display:none">
-      <input class="margin-input" id="marginInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal" />
-      <button class="margin-save-btn" onclick="saveMargin()">Save</button>
-      <button class="margin-clear-btn" onclick="clearMargin()">Clear</button>
-    </div>
-  </div>
-
-  <!-- Cash / Savings -->
-  <div class="margin-section" id="cashSection" style="border-color:rgba(0,212,170,0.25);margin-top:8px;">
-    <div class="margin-header">
-      <div>
-        <div class="margin-title" style="color:var(--green);">Cash / Savings</div>
-        <div class="margin-sub">Added to portfolio balance</div>
-      </div>
-      <div class="margin-right">
-        <span class="cash-amount" id="cashAmount">None</span>
-        <button class="margin-edit-btn" onclick="toggleCashEdit()">edit</button>
+      <div class="adj-input-row" id="marginRow">
+        <input class="adj-input" id="marginInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+        <button class="adj-save margin-card" id="marginSave">Save</button>
+        <button class="adj-clear" id="marginClear">Clear</button>
       </div>
     </div>
-    <div class="margin-edit-row" id="cashEditRow" style="display:none">
-      <input class="margin-input" id="cashInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal" style="border-color:var(--border2);" />
-      <button class="margin-save-btn" style="background:rgba(0,212,170,0.1);border-color:var(--green2);color:var(--green);" onclick="saveCash()">Save</button>
-      <button class="margin-clear-btn" onclick="clearCash()">Clear</button>
+    <div class="adj-card cash-card">
+      <div class="adj-label">Cash / Savings</div>
+      <div class="adj-sub">Added to balance</div>
+      <div class="adj-display">
+        <span class="adj-amount" id="cashAmt" style="color:var(--dim);font-size:14px;">None</span>
+        <button class="adj-edit-btn" id="cashEditBtn">edit</button>
+      </div>
+      <div class="adj-input-row" id="cashRow">
+        <input class="adj-input" id="cashInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+        <button class="adj-save cash-card" id="cashSave">Save</button>
+        <button class="adj-clear" id="cashClear">Clear</button>
+      </div>
     </div>
   </div>
 
   <div class="refresh-footer">
-    <div class="refresh-info">
-      Last updated: <b id="lastUpdated">—</b><br>
-      <span class="src-note"><span class="src-av">■ Alpha Vantage</span></span>
-    </div>
-    <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">
-      <span class="spin">↻</span>&nbsp; Refresh Prices
-    </button>
+    <div class="refresh-info">Last updated: <b id="lastUpdated">—</b><br><span style="font-size:10px;color:var(--dim);">■ Alpha Vantage · one price every 3s</span></div>
+    <button class="refresh-btn" id="refreshBtn"><span class="spin">↻</span>&nbsp;Refresh Prices</button>
   </div>
+
 </div>
 </div>
 
-<!-- Rename/Delete Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <div class="modal-title" id="modalTitle">Rename Portfolio</div>
-    <input class="modal-input" id="modalInput" type="text" maxlength="24" />
+    <div class="modal-title" id="modalTitle">Portfolio</div>
+    <input class="modal-input" id="modalInput" type="text" maxlength="24"/>
     <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-ok" onclick="confirmModal()">Save</button>
+      <button class="modal-cancel" id="modalCancel">Cancel</button>
+      <button class="modal-ok" id="modalOk">Save</button>
     </div>
-    <button class="modal-del" id="modalDelBtn" onclick="deletePortfolio()">Delete This Portfolio</button>
+    <button class="modal-del" id="modalDel" style="display:none">Delete This Portfolio</button>
   </div>
 </div>
 
 <script>
-const AV_KEY='W0ZW9BEBW3L5CB0L';
-const SB_URL='https://zekusnkejcyjwermbdgb.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
-const SB_HEADERS={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
-const PW_HASH='e457b6fbf1f1a472b7f0ff250835aee1cbd6fbc7527ed623859036ff070fe453';
-const SESSION_KEY='pt_session';
-const PORTFOLIOS_KEY='pt_portfolios';
+// ── Constants ──────────────────────────────────────────────────────────
+const AV_KEY = 'W0ZW9BEBW3L5CB0L';
+const SB_URL = 'https://zekusnkejcyjwermbdgb.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpla3VzbmtlamN5andlcm1iZGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTg0NjcsImV4cCI6MjA5NTc3NDQ2N30.eUFbpZBbNMP8wnkp3aY3E9cW_dPrfGk-PTips8EUdnk';
+const SB_HDR = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+const PW_HASH = 'e457b6fbf1f1a472b7f0ff250835aee1cbd6fbc7527ed623859036ff070fe453';
 
-// ── State ─────────────────────────────────────────────────────────────
-let portfolios=[]; // [{id, name}]
-let activePortfolioId=null;
-let allHoldings={};  // {portfolioId: [{id,sym,shares,portfolio_id}]}
-let prices={},cache={},blurred=false;
-let failedAttempts=0,lockedUntil=0;
-let modalMode=null; // 'rename' | 'add'
+// ── State ──────────────────────────────────────────────────────────────
+let portfolios = [];
+let activeId = null;
+let allHoldings = {};
+let prices = {};
+let priceCache = {};
+let blurred = false;
+let failedAttempts = 0;
+let lockedUntil = 0;
+let modalMode = null;
+let modalTargetId = null;
+let marginData = {};
+let cashData = {};
 
-// ── Auth ──────────────────────────────────────────────────────────────
-async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
-function isSessionValid(){try{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{}');return s.auth===true&&Date.now()<s.expires;}catch{return false;}}
-function saveSession(){sessionStorage.setItem(SESSION_KEY,JSON.stringify({auth:true,expires:Date.now()+8*60*60*1000}));}
-function clearSession(){sessionStorage.removeItem(SESSION_KEY);}
-async function attemptLogin(){
-  const now=Date.now();
-  if(now<lockedUntil){const m=Math.ceil((lockedUntil-now)/60000);document.getElementById('loginErr').textContent=`Too many attempts. Try again in ${m} min.`;return;}
-  const hash=await sha256(document.getElementById('pwInput').value);
-  if(hash===PW_HASH){
-    failedAttempts=0;saveSession();
+// ── Helpers ────────────────────────────────────────────────────────────
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+function fmt$(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmt$0(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function blur(el){ if(blurred) el.classList.add('blurred-val'); else el.classList.remove('blurred-val'); }
+
+// ── Auth ───────────────────────────────────────────────────────────────
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function sessionOk(){
+  try{ const s=JSON.parse(sessionStorage.getItem('pt_sess')||'{}'); return s.ok&&Date.now()<s.exp; }catch{ return false; }
+}
+function saveSession(){ sessionStorage.setItem('pt_sess', JSON.stringify({ok:true,exp:Date.now()+8*3600*1000})); }
+function clearSession(){ sessionStorage.removeItem('pt_sess'); }
+
+async function doLogin(){
+  const now = Date.now();
+  if(now < lockedUntil){
+    const m = Math.ceil((lockedUntil-now)/60000);
+    document.getElementById('loginErr').textContent = 'Locked. Try in '+m+' min.';
+    return;
+  }
+  const hash = await sha256(document.getElementById('pwInput').value);
+  if(hash === PW_HASH){
+    failedAttempts = 0;
+    saveSession();
+    document.getElementById('pwInput').value = '';
+    document.getElementById('loginErr').textContent = '';
+    document.getElementById('loginAttempts').textContent = '';
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('appScreen').classList.add('visible');
-    document.getElementById('pwInput').value='';
-    document.getElementById('loginErr').textContent='';
     initApp();
   } else {
-    failedAttempts++;document.getElementById('pwInput').value='';
-    if(failedAttempts>=5){lockedUntil=Date.now()+15*60*1000;document.getElementById('loginErr').textContent='Too many attempts. Locked for 15 minutes.';}
-    else{const l=5-failedAttempts;document.getElementById('loginErr').textContent='Incorrect password.';document.getElementById('loginAttempts').textContent=`${l} attempt${l===1?'':'s'} remaining`;}
+    failedAttempts++;
+    document.getElementById('pwInput').value = '';
+    if(failedAttempts >= 5){
+      lockedUntil = Date.now() + 15*60*1000;
+      document.getElementById('loginErr').textContent = 'Too many attempts. Locked 15 min.';
+    } else {
+      const left = 5 - failedAttempts;
+      document.getElementById('loginErr').textContent = 'Incorrect password.';
+      document.getElementById('loginAttempts').textContent = left+' attempt'+(left===1?'':'s')+' remaining';
+    }
   }
 }
-function lockApp(){clearSession();document.getElementById('appScreen').classList.remove('visible');document.getElementById('loginScreen').classList.remove('hidden');document.getElementById('loginErr').textContent='';document.getElementById('loginAttempts').textContent='';}
-document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')attemptLogin();});
-if(isSessionValid()){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('appScreen').classList.add('visible');initApp();}
-
-// ── Portfolio management ──────────────────────────────────────────────
-function savePortfoliosMeta(){localStorage.setItem(PORTFOLIOS_KEY,JSON.stringify(portfolios));}
-
-async function loadPortfolios(){
-  // Load portfolio metadata from localStorage
-  const saved=JSON.parse(localStorage.getItem(PORTFOLIOS_KEY)||'null');
-  if(saved&&saved.length){portfolios=saved;}
-  else{portfolios=[{id:'ira',name:'IRA'},{id:'trading',name:'Trading'}];savePortfoliosMeta();}
-  if(!activePortfolioId||!portfolios.find(p=>p.id===activePortfolioId)){
-    activePortfolioId=portfolios[0].id;
-  }
+function doLock(){
+  clearSession();
+  document.getElementById('appScreen').classList.remove('visible');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginErr').textContent = '';
+  document.getElementById('loginAttempts').textContent = '';
 }
 
-async function loadAllHoldings(){
+// ── Portfolio data ─────────────────────────────────────────────────────
+function saveMeta(){ localStorage.setItem('pt_portfolios', JSON.stringify(portfolios)); }
+function loadMeta(){
+  const s = JSON.parse(localStorage.getItem('pt_portfolios')||'null');
+  if(s && s.length){ portfolios = s; }
+  else{ portfolios = [{id:'ira',name:'IRA'},{id:'trading',name:'Trading'}]; saveMeta(); }
+  if(!activeId || !portfolios.find(p=>p.id===activeId)) activeId = portfolios[0].id;
+}
+
+function saveAdj(){
+  localStorage.setItem('pt_margin', JSON.stringify(marginData));
+  localStorage.setItem('pt_cash', JSON.stringify(cashData));
+}
+function loadAdj(){
+  try{ marginData = JSON.parse(localStorage.getItem('pt_margin')||'{}'); }catch{ marginData={}; }
+  try{ cashData = JSON.parse(localStorage.getItem('pt_cash')||'{}'); }catch{ cashData={}; }
+}
+
+function getMargin(pid){ return parseFloat(marginData[pid]||0); }
+function getCash(pid){ return parseFloat(cashData[pid]||0); }
+function currentH(){ return allHoldings[activeId]||[]; }
+function stockTotal(pid){ return (allHoldings[pid]||[]).reduce((s,h)=>{ const p=prices[h.sym]; return s+(p?p.price*h.shares:0); },0); }
+function netTotal(pid){ return Math.max(0, stockTotal(pid)+getCash(pid)-getMargin(pid)); }
+function allNet(){ return portfolios.reduce((s,p)=>s+netTotal(p.id),0); }
+
+// ── Supabase ───────────────────────────────────────────────────────────
+function setSyncStatus(s){
+  const dot = document.getElementById('statusDot');
+  const badge = document.getElementById('syncBadge');
+  dot.className = 'status-dot'+(s==='ok'?'':s==='syncing'?' syncing':' offline');
+  badge.className = 'sync-badge'+(s==='ok'?' ok':s==='syncing'?' syncing':' err');
+  badge.textContent = s==='ok'?'synced':s==='syncing'?'syncing...':'offline';
+}
+async function dbLoad(){
   setSyncStatus('syncing');
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/holdings?select=*&order=created_at.asc`,{headers:SB_HEADERS});
-    if(!r.ok)throw 0;
-    const rows=await r.json();
-    allHoldings={};
+    const r = await fetch(SB_URL+'/rest/v1/holdings?select=*&order=created_at.asc', {headers:SB_HDR});
+    if(!r.ok) throw 0;
+    const rows = await r.json();
+    allHoldings = {};
     rows.forEach(h=>{
-      const pid=h.portfolio_id||'ira';
-      if(!allHoldings[pid])allHoldings[pid]=[];
+      const pid = h.portfolio_id||'ira';
+      if(!allHoldings[pid]) allHoldings[pid]=[];
       allHoldings[pid].push(h);
     });
     setSyncStatus('ok');
-  }catch{
+  } catch {
     setSyncStatus('error');
-    // fallback: load legacy holdings as 'ira'
-    const legacy=JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');
-    allHoldings={ira:legacy};
+    const leg = JSON.parse(localStorage.getItem('portfolio_holdings_v2')||'[]');
+    allHoldings = {ira: leg};
   }
 }
+async function dbAdd(h){ try{ await fetch(SB_URL+'/rest/v1/holdings',{method:'POST',headers:SB_HDR,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares,portfolio_id:h.portfolio_id})}); setSyncStatus('ok'); }catch{ setSyncStatus('error'); } }
+async function dbPatch(h){ try{ await fetch(SB_URL+'/rest/v1/holdings?id=eq.'+h.id,{method:'PATCH',headers:SB_HDR,body:JSON.stringify({shares:h.shares})}); setSyncStatus('ok'); }catch{ setSyncStatus('error'); } }
+async function dbDel(id){ try{ await fetch(SB_URL+'/rest/v1/holdings?id=eq.'+id,{method:'DELETE',headers:SB_HDR}); setSyncStatus('ok'); }catch{ setSyncStatus('error'); } }
 
-function currentHoldings(){return allHoldings[activePortfolioId]||[];}
-
-function tabTotal(pid){
-  const h=allHoldings[pid]||[];
-  return h.reduce((s,h)=>{const p=prices[h.sym];return s+(p?p.price*h.shares:0);},0);
-}
-function tabNet(pid){return Math.max(0,tabTotal(pid)+getCash(pid)-getMargin(pid));}
-function combinedTotal(){return portfolios.reduce((s,p)=>s+tabNet(p.id),0);}
-
-// ── Tabs render ───────────────────────────────────────────────────────
-function renderTabs(){
-  const row=document.getElementById('tabsRow');
-  row.innerHTML='';
-  portfolios.forEach(p=>{
-    const t=tabNet(p.id);
-    const valStr=t>0?(blurred?'••••••':'$'+t.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})):'';
-    const btn=document.createElement('button');
-    btn.className='tab-btn'+(p.id===activePortfolioId?' active':'');
-    btn.innerHTML=`${p.name}${valStr?`<span class="tab-bal">${valStr}</span>`:''}`;
-    btn.onclick=()=>{activePortfolioId=p.id;renderAll();};
-    // Long-press or right-click to rename
-    btn.oncontextmenu=(e)=>{e.preventDefault();openRenameModal(p.id);};
-    // Double-click to rename on desktop
-    btn.ondblclick=()=>openRenameModal(p.id);
-    row.appendChild(btn);
-  });
-  // Add portfolio button
-  const addBtn=document.createElement('button');
-  addBtn.className='tab-add-btn';addBtn.textContent='+ New';
-  addBtn.onclick=()=>openAddPortfolioModal();
-  row.appendChild(addBtn);
-}
-
-// ── Modal ─────────────────────────────────────────────────────────────
-let modalTargetId=null;
-function openRenameModal(pid){
-  modalTargetId=pid;modalMode='rename';
-  const p=portfolios.find(x=>x.id===pid);
-  document.getElementById('modalTitle').textContent='Rename Portfolio';
-  document.getElementById('modalInput').value=p?p.name:'';
-  document.getElementById('modalDelBtn').style.display=portfolios.length>1?'block':'none';
-  document.getElementById('modalOverlay').classList.add('open');
-  setTimeout(()=>document.getElementById('modalInput').focus(),50);
-}
-function openAddPortfolioModal(){
-  modalTargetId=null;modalMode='add';
-  document.getElementById('modalTitle').textContent='New Portfolio';
-  document.getElementById('modalInput').value='';
-  document.getElementById('modalDelBtn').style.display='none';
-  document.getElementById('modalOverlay').classList.add('open');
-  setTimeout(()=>document.getElementById('modalInput').focus(),50);
-}
-function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
-function confirmModal(){
-  const name=document.getElementById('modalInput').value.trim();
-  if(!name)return;
-  if(modalMode==='rename'&&modalTargetId){
-    const p=portfolios.find(x=>x.id===modalTargetId);
-    if(p){p.name=name;savePortfoliosMeta();}
-  } else if(modalMode==='add'){
-    const id='p_'+Date.now();
-    portfolios.push({id,name});
-    savePortfoliosMeta();
-    activePortfolioId=id;
-  }
-  closeModal();renderAll();
-}
-function deletePortfolio(){
-  if(portfolios.length<=1)return;
-  if(!confirm(`Delete "${portfolios.find(p=>p.id===modalTargetId)?.name}"? All its holdings will also be removed.`))return;
-  // delete holdings for this portfolio from DB
-  const toDelete=(allHoldings[modalTargetId]||[]).map(h=>h.id);
-  toDelete.forEach(id=>dbDelete(id));
-  delete allHoldings[modalTargetId];
-  portfolios=portfolios.filter(p=>p.id!==modalTargetId);
-  savePortfoliosMeta();
-  activePortfolioId=portfolios[0].id;
-  closeModal();renderAll();
-}
-document.getElementById('modalInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmModal();if(e.key==='Escape')closeModal();});
-document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
-
-// ── Price APIs ────────────────────────────────────────────────────────
-// Alpha Vantage: 25 req/min free. We fetch one at a time with 3s gaps.
-// At 3s/symbol, 13 symbols = ~39s total. Cache 5min so it only runs once.
-
-function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-
-async function fetchAVSingle(sym){
+// ── Prices ─────────────────────────────────────────────────────────────
+async function fetchAV(sym){
   try{
-    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${AV_KEY}`);
-    if(!r.ok)return null;
-    const d=await r.json();
-    const q=d['Global Quote'];
-    if(!q||!q['05. price']||parseFloat(q['05. price'])===0)return null;
-    return{
-      price:parseFloat(q['05. price']),
-      change:parseFloat(q['09. change']||0),
-      changePct:parseFloat(q['10. change percent']||0),
-      src:'AV'
-    };
-  }catch{return null;}
+    const r = await fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+sym+'&apikey='+AV_KEY);
+    if(!r.ok) return null;
+    const d = await r.json();
+    const q = d['Global Quote'];
+    if(!q||!q['05. price']||parseFloat(q['05. price'])===0) return null;
+    return { price:parseFloat(q['05. price']), change:parseFloat(q['09. change']||0), changePct:parseFloat(q['10. change percent']||0) };
+  } catch { return null; }
 }
 
-async function refreshAllPrices(force=false){
-  const now=Date.now();const CACHE_MS=force?0:300000;
-  const allSyms=[...new Set([
+async function refreshPrices(force){
+  const now = Date.now();
+  const CACHE = force ? 0 : 300000;
+  const syms = [...new Set([
     ...Object.values(allHoldings).flat().map(h=>h.sym),
     'QQQ','SPY','VIX','DIA'
   ])];
-  const stale=allSyms.filter(s=>!cache[s]||(now-cache[s].ts)>CACHE_MS);
-  if(!stale.length)return;
+  const stale = syms.filter(s => !priceCache[s] || (now-priceCache[s].ts) > CACHE);
+  if(!stale.length) return;
 
-  // Fetch one at a time, 3 seconds apart — stays well under 25/min limit
-  for(let i=0;i<stale.length;i++){
-    if(i>0)await sleep(3000);
-    const sym=stale[i];
-    const d=await fetchAVSingle(sym);
-    if(d){prices[sym]=d;cache[sym]={...d,ts:now};renderAll();}
+  for(let i=0; i<stale.length; i++){
+    if(i>0) await sleep(3000);
+    const sym = stale[i];
+    const d = await fetchAV(sym);
+    if(d){ prices[sym]=d; priceCache[sym]={...d,ts:Date.now()}; renderAll(); }
   }
-  document.getElementById('lastUpdated').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
 async function manualRefresh(){
-  const btn=document.getElementById('refreshBtn');btn.disabled=true;btn.classList.add('spinning');
-  cache={};await refreshAllPrices(true);renderAll();
-  btn.disabled=false;btn.classList.remove('spinning');
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled=true; btn.classList.add('spinning');
+  priceCache={};
+  await refreshPrices(true);
+  renderAll();
+  btn.disabled=false; btn.classList.remove('spinning');
 }
 
-// ── Supabase ──────────────────────────────────────────────────────────
-function setSyncStatus(s){
-  const dot=document.getElementById('statusDot'),badge=document.getElementById('syncBadge');
-  dot.className='status-dot '+(s==='ok'?'':s==='syncing'?'syncing':'offline');
-  badge.className='sync-badge '+(s==='ok'?'ok':s==='syncing'?'syncing':'err');
-  badge.textContent=s==='ok'?'synced':s==='syncing'?'syncing...':'offline';
-}
-async function dbAdd(h){try{await fetch(`${SB_URL}/rest/v1/holdings`,{method:'POST',headers:SB_HEADERS,body:JSON.stringify({id:h.id,sym:h.sym,shares:h.shares,portfolio_id:h.portfolio_id})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
-async function dbUpdate(h){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${h.id}`,{method:'PATCH',headers:SB_HEADERS,body:JSON.stringify({shares:h.shares})});setSyncStatus('ok');}catch{setSyncStatus('error');}}
-async function dbDelete(id){try{await fetch(`${SB_URL}/rest/v1/holdings?id=eq.${id}`,{method:'DELETE',headers:SB_HEADERS});setSyncStatus('ok');}catch{setSyncStatus('error');}}
-
-// ── Render ────────────────────────────────────────────────────────────
-function srcTag(sym){const s=prices[sym]?.src;if(!s)return'';const cls=s==='AV'?'src-av':s==='TD'?'src-td':'src-av';return`<span class="src-tag ${cls}">${s}</span>`;}
+// ── Render ─────────────────────────────────────────────────────────────
+const COLORS = ['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
 
 function renderTicker(){
   [['qqq','QQQ'],['spy','SPY'],['vix','VIX'],['dia','DIA']].forEach(([id,sym])=>{
-    const d=prices[sym];if(!d)return;
-    document.getElementById(id+'Price').textContent='$'+d.price.toFixed(2);
-    const el=document.getElementById(id+'Chg');el.textContent=(d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
-    el.className='t-chg '+(d.change>=0?'up':'dn');
+    const d = prices[sym]; if(!d) return;
+    document.getElementById(id+'Price').textContent = '$'+d.price.toFixed(2);
+    const el = document.getElementById(id+'Chg');
+    el.textContent = (d.change>=0?'+':'')+d.changePct.toFixed(2)+'%';
+    el.className = 't-chg '+(d.change>=0?'up':'dn');
   });
+}
+
+function renderTabs(){
+  const row = document.getElementById('tabsRow');
+  row.innerHTML = '';
+  portfolios.forEach(p=>{
+    const net = netTotal(p.id);
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn'+(p.id===activeId?' active':'');
+    const valStr = net>0 ? (blurred?'••••':fmt$0(net)) : '';
+    btn.innerHTML = p.name + (valStr?'<span class="tab-bal">'+valStr+'</span>':'');
+    btn.addEventListener('click', ()=>{ activeId=p.id; renderAll(); });
+    btn.addEventListener('dblclick', ()=>openModal('rename',p.id));
+    btn.addEventListener('contextmenu', e=>{ e.preventDefault(); openModal('rename',p.id); });
+    row.appendChild(btn);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.className = 'tab-add';
+  addBtn.textContent = '+ New';
+  addBtn.addEventListener('click', ()=>openModal('add',null));
+  row.appendChild(addBtn);
+}
+
+function renderAdj(){
+  const margin = getMargin(activeId);
+  const cash = getCash(activeId);
+  const mEl = document.getElementById('marginAmt');
+  const cEl = document.getElementById('cashAmt');
+  if(margin>0){
+    mEl.textContent = '-'+fmt$(margin);
+    mEl.style.cssText = 'color:var(--red);font-size:18px;font-weight:600;';
+    if(blurred) mEl.classList.add('blurred-val'); else mEl.classList.remove('blurred-val');
+  } else {
+    mEl.textContent = 'None';
+    mEl.style.cssText = 'color:var(--dim);font-size:14px;';
+    mEl.classList.remove('blurred-val');
+  }
+  if(cash>0){
+    cEl.textContent = '+'+fmt$(cash);
+    cEl.style.cssText = 'color:var(--green);font-size:18px;font-weight:600;';
+    if(blurred) cEl.classList.add('blurred-val'); else cEl.classList.remove('blurred-val');
+  } else {
+    cEl.textContent = 'None';
+    cEl.style.cssText = 'color:var(--dim);font-size:14px;';
+    cEl.classList.remove('blurred-val');
+  }
 }
 
 function renderAll(){
   renderTabs();
   renderTicker();
-  renderMargin();
-  const holdings=currentHoldings();
-  const gross=tabTotal(activePortfolioId);
-  const margin=getMargin(activePortfolioId);
-  const cash=getCash(activePortfolioId);
-  const total=Math.max(0,gross+cash-margin);
-  const combined=combinedTotal();
-  const activeName=portfolios.find(p=>p.id===activePortfolioId)?.name||'Portfolio';
+  renderAdj();
 
-  document.getElementById('balLabel').textContent=activeName+' Balance';
-  document.getElementById('holdingsCardTitle').textContent=activeName+' Holdings';
-  document.getElementById('addTitle').textContent='ADD TO '+activeName.toUpperCase();
+  const name = portfolios.find(p=>p.id===activeId)?.name||'Portfolio';
+  document.getElementById('balLabel').textContent = name+' Balance';
+  document.getElementById('holdingsTitle').textContent = name+' Holdings';
+  document.getElementById('addTitle').textContent = 'ADD TO '+name.toUpperCase();
 
-  const balEl=document.getElementById('totalBal');
-  balEl.textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  balEl.className='bal-amount'+(blurred?' blurred':'');
+  const net = netTotal(activeId);
+  const balEl = document.getElementById('totalBal');
+  balEl.textContent = fmt$(net);
+  if(blurred) balEl.classList.add('blurred'); else balEl.classList.remove('blurred');
 
-  // Show combined total (using net values) if >1 portfolio
-  const combEl=document.getElementById('combinedBal');
+  const combEl = document.getElementById('combinedBal');
   if(portfolios.length>1){
-    const netCombined=portfolios.reduce((s,p)=>{
-      const g=tabTotal(p.id);const m=getMargin(p.id);const c=getCash(p.id);
-      return s+Math.max(0,g+c-m);
-    },0);
     combEl.style.display='';
-    combEl.textContent='All: $'+netCombined.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-    combEl.className='bal-combined'+(blurred?' blurred-val':'');
-  } else {combEl.style.display='none';}
+    combEl.textContent = 'All: '+fmt$0(allNet());
+    if(blurred) combEl.classList.add('blurred-val'); else combEl.classList.remove('blurred-val');
+  } else { combEl.style.display='none'; }
 
-  renderHoldings(holdings,gross);
-  renderMobileCards(holdings,gross);
-  renderAlloc(holdings,gross);
+  const holdings = currentH();
+  const gross = stockTotal(activeId);
+  renderHoldings(holdings, gross);
+  renderCards(holdings, gross);
+  renderAlloc(holdings, gross);
 }
 
-function renderHoldings(holdings,total){
-  const body=document.getElementById('holdingsBody');
-  if(!holdings.length){body.innerHTML='<tr><td colspan="6" class="empty-state">No holdings yet. Add your first position below.</td></tr>';return;}
-  const sorted=[...holdings].sort((a,b)=>{const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0;return bv-av;});
-  body.innerHTML=sorted.map(h=>{
-    const p=prices[h.sym],val=p?p.price*h.shares:null,pct=val&&total>0?(val/total)*100:0,isWarn=pct>50;
-    const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
-    const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
-    return`<tr>
-      <td><div class="sym-cell"><span class="sym-badge">${h.sym}</span>${srcTag(h.sym)}${p?`<span style="font-size:11px;color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}</div></td>
-      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'<span style="color:var(--dim)">fetching...</span>'}</td>
+function renderHoldings(holdings, total){
+  const body = document.getElementById('holdingsBody');
+  if(!holdings.length){
+    body.innerHTML = '<tr><td colspan="6" class="empty-state">No holdings. Add a position below.</td></tr>';
+    return;
+  }
+  const sorted = [...holdings].sort((a,b)=>(prices[b.sym]?.price*b.shares||0)-(prices[a.sym]?.price*a.shares||0));
+  body.innerHTML = sorted.map(h=>{
+    const p = prices[h.sym];
+    const val = p ? p.price*h.shares : null;
+    const pct = val&&total>0 ? (val/total)*100 : 0;
+    const isWarn = pct>50;
+    const chgColor = p&&p.change>=0?'var(--green)':'var(--red)';
+    const valStr = val!==null ? fmt$(val) : '—';
+    const pctStr = val!==null ? pct.toFixed(1)+'%' : '—';
+    return `<tr>
+      <td><div class="sym-cell">
+        <span class="sym-badge">${h.sym}</span>
+        ${p?`<span style="font-size:10px;color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}%</span>`:''}
+      </div></td>
+      <td class="td-mono${blurred?' blurred-val':''}">${p?'$'+p.price.toFixed(2):'<span style="color:var(--dim)">fetching…</span>'}</td>
       <td class="td-mono" style="color:var(--muted)">${Number(h.shares).toLocaleString()}</td>
       <td class="td-mono${blurred?' blurred-val':''}" style="font-weight:500">${valStr}</td>
-      <td><div class="pct-bar-wrap">${isWarn?'<span class="warn">⚠</span>':''}<span class="td-mono" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:34px;text-align:right${blurred?';filter:blur(7px)':''}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div></div></td>
-      <td><button class="del-btn" onclick="deleteHolding('${h.id}')">×</button></td>
+      <td><div class="pct-wrap">
+        ${isWarn?'<span class="warn">⚠</span>':''}
+        <span class="td-mono${blurred?' blurred-val':''}" style="font-size:11px;color:${isWarn?'var(--amber)':'var(--muted)'};min-width:34px;text-align:right">${pctStr}</span>
+        <div class="pct-bar${isWarn?' warn-bar':''}" style="width:${Math.min(pct,100)*1.2}px;max-width:48px"></div>
+      </div></td>
+      <td><button class="del-btn" data-id="${h.id}">×</button></td>
     </tr>`;
   }).join('');
+  body.querySelectorAll('.del-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>deleteHolding(btn.dataset.id));
+  });
 }
 
-function renderMobileCards(holdings,total){
-  const container=document.getElementById('holdingCards');
-  if(!holdings.length){container.innerHTML='<div class="empty-state">No holdings yet. Add your first position below.</div>';return;}
-  const colors=['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
-  const sorted=[...holdings].sort((a,b)=>{const av=prices[a.sym]?prices[a.sym].price*a.shares:0,bv=prices[b.sym]?prices[b.sym].price*b.shares:0;return bv-av;});
-  container.innerHTML=sorted.map((h,i)=>{
-    const p=prices[h.sym],val=p?p.price*h.shares:null,pct=val&&total>0?(val/total)*100:0,isWarn=pct>50;
-    const valStr=val!==null?'$'+val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
-    const chgColor=p&&p.change>=0?'var(--green)':'var(--red)';
-    const barColor=isWarn?'var(--amber)':colors[i%colors.length];
-    return`<div class="holding-card">
-      <div class="hc-top">
-        <div><div class="hc-sym">${h.sym}${srcTag(h.sym)}${isWarn?' <span style="color:var(--amber)">⚠</span>':''}</div>${p?`<div class="hc-chg" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}% · $${p.price.toFixed(2)}</div>`:''}</div>
-        <div><div class="hc-value${blurred?' blurred-val':''}">${valStr}</div><div class="hc-value-label">${Number(h.shares).toLocaleString()} shares</div></div>
+function renderCards(holdings, total){
+  const container = document.getElementById('holdingCards');
+  if(!holdings.length){ container.innerHTML='<div class="empty-state">No holdings. Add a position below.</div>'; return; }
+  const sorted = [...holdings].sort((a,b)=>(prices[b.sym]?.price*b.shares||0)-(prices[a.sym]?.price*a.shares||0));
+  container.innerHTML = sorted.map((h,i)=>{
+    const p = prices[h.sym];
+    const val = p ? p.price*h.shares : null;
+    const pct = val&&total>0 ? (val/total)*100 : 0;
+    const isWarn = pct>50;
+    const chgColor = p&&p.change>=0?'var(--green)':'var(--red)';
+    const barColor = isWarn?'var(--amber)':COLORS[i%COLORS.length];
+    return `<div class="hcard">
+      <div class="hcard-top">
+        <div>
+          <div class="hcard-sym">${h.sym}${isWarn?' <span style="color:var(--amber)">⚠</span>':''}</div>
+          ${p?`<div class="hcard-chg" style="color:${chgColor}">${p.change>=0?'+':''}${p.changePct.toFixed(2)}% · $${p.price.toFixed(2)}</div>`:''}
+        </div>
+        <div>
+          <div class="hcard-val${blurred?' blurred-val':''}">${val!==null?fmt$(val):'—'}</div>
+          <div class="hcard-shares">${Number(h.shares).toLocaleString()} shares</div>
+        </div>
       </div>
-      <div class="hc-bottom">
-        <div class="hc-alloc"><span class="hc-pct${blurred?' blurred-val':''}" style="color:${isWarn?'var(--amber)':'var(--muted)'}">${val!==null?pct.toFixed(1)+'%':'—'}</span><div class="hc-bar-track"><div class="hc-bar-fill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div></div></div>
-        <button class="hc-del" onclick="deleteHolding('${h.id}')">×</button>
+      <div class="hcard-bot">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="hcard-pct${blurred?' blurred-val':''}" style="color:${isWarn?'var(--amber)':'var(--muted)'}">${val!==null?pct.toFixed(1)+'%':'—'}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div></div>
+        </div>
+        <button class="hcard-del" data-id="${h.id}">×</button>
       </div>
     </div>`;
   }).join('');
+  container.querySelectorAll('.hcard-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>deleteHolding(btn.dataset.id));
+  });
 }
 
-function renderAlloc(holdings,total){
-  const list=document.getElementById('allocList');
-  if(!holdings.length){list.innerHTML='<div class="loading-msg">Add holdings to see allocation.</div>';return;}
-  const colors=['#00d4aa','#4d9fff','#f5a623','#c77dff','#ff4d6a','#00b4d8','#f77f00','#80b918'];
-  const sorted=[...holdings].map(h=>{const p=prices[h.sym],val=p?p.price*h.shares:0;return{sym:h.sym,val,pct:total>0?(val/total)*100:0};}).sort((a,b)=>b.pct-a.pct);
-  list.innerHTML=sorted.map((item,i)=>`<div class="alloc-item"><div class="alloc-top"><span class="alloc-sym">${item.sym}</span><span class="alloc-pct${blurred?' blurred-val':''}">${item.pct.toFixed(1)}%</span></div><div class="alloc-track"><div class="alloc-fill" style="width:${item.pct}%;background:${item.pct>50?'var(--amber)':colors[i%colors.length]}"></div></div></div>`).join('');
+function renderAlloc(holdings, total){
+  const list = document.getElementById('allocList');
+  if(!holdings.length){ list.innerHTML='<div class="loading-msg">Add holdings to see allocation.</div>'; return; }
+  const sorted = [...holdings].map(h=>{ const p=prices[h.sym],val=p?p.price*h.shares:0; return{sym:h.sym,val,pct:total>0?(val/total)*100:0}; }).sort((a,b)=>b.pct-a.pct);
+  list.innerHTML = sorted.map((item,i)=>`
+    <div class="alloc-item">
+      <div class="alloc-row">
+        <span class="alloc-sym">${item.sym}</span>
+        <span class="alloc-pct${blurred?' blurred-val':''}">${item.pct.toFixed(1)}%</span>
+      </div>
+      <div class="alloc-track"><div class="alloc-fill" style="width:${item.pct}%;background:${item.pct>50?'var(--amber)':COLORS[i%COLORS.length]}"></div></div>
+    </div>`).join('');
 }
 
-// ── Add / Delete holdings ─────────────────────────────────────────────
+// ── Add / Delete ───────────────────────────────────────────────────────
 async function addHolding(){
-  const sym=document.getElementById('inpSym').value.trim().toUpperCase();
-  const shares=parseFloat(document.getElementById('inpShares').value);
-  const err=document.getElementById('errMsg'),btn=document.getElementById('addBtn');
-  err.textContent='';
-  if(!sym){err.textContent='Enter a ticker symbol.';return;}
-  if(!shares||shares<=0){err.textContent='Enter a valid share count.';return;}
-  btn.disabled=true;btn.textContent='FETCHING...';
-  delete cache[sym];delete prices[sym];
-  const d=await fetchAVSingle(sym);
-  if(d)prices[sym]=d;
-  if(!prices[sym]){err.textContent=`Could not fetch price for ${sym}.`;btn.disabled=false;btn.textContent='+ ADD';return;}
-  cache[sym]={...prices[sym],ts:Date.now()};
+  const sym = document.getElementById('inpSym').value.trim().toUpperCase();
+  const shares = parseFloat(document.getElementById('inpShares').value);
+  const errEl = document.getElementById('errMsg');
+  const btn = document.getElementById('addBtn');
+  errEl.textContent = '';
+  if(!sym){ errEl.textContent='Enter a ticker symbol.'; return; }
+  if(!shares||shares<=0){ errEl.textContent='Enter a valid share count.'; return; }
+  btn.disabled=true; btn.textContent='FETCHING...';
+  delete priceCache[sym]; delete prices[sym];
+  const d = await fetchAV(sym);
+  if(d){ prices[sym]=d; priceCache[sym]={...d,ts:Date.now()}; }
+  if(!prices[sym]){ errEl.textContent='Could not fetch price for '+sym+'.'; btn.disabled=false; btn.textContent='+ ADD'; return; }
   setSyncStatus('syncing');
-  if(!allHoldings[activePortfolioId])allHoldings[activePortfolioId]=[];
-  const existing=allHoldings[activePortfolioId].find(h=>h.sym===sym);
-  if(existing){existing.shares=parseFloat(existing.shares)+shares;await dbUpdate(existing);}
-  else{const h={id:Date.now().toString(),sym,shares,portfolio_id:activePortfolioId};allHoldings[activePortfolioId].push(h);await dbAdd(h);}
-  document.getElementById('inpSym').value='';document.getElementById('inpShares').value='';
-  btn.disabled=false;btn.textContent='+ ADD';
+  if(!allHoldings[activeId]) allHoldings[activeId]=[];
+  const existing = allHoldings[activeId].find(h=>h.sym===sym);
+  if(existing){ existing.shares=parseFloat(existing.shares)+shares; await dbPatch(existing); }
+  else{ const h={id:Date.now().toString(),sym,shares,portfolio_id:activeId}; allHoldings[activeId].push(h); await dbAdd(h); }
+  document.getElementById('inpSym').value='';
+  document.getElementById('inpShares').value='';
+  btn.disabled=false; btn.textContent='+ ADD';
   renderAll();
 }
 
 async function deleteHolding(id){
-  if(!allHoldings[activePortfolioId])return;
-  allHoldings[activePortfolioId]=allHoldings[activePortfolioId].filter(h=>h.id!==id);
-  setSyncStatus('syncing');await dbDelete(id);renderAll();
+  if(!allHoldings[activeId]) return;
+  allHoldings[activeId] = allHoldings[activeId].filter(h=>h.id!==id);
+  setSyncStatus('syncing');
+  await dbDel(id);
+  renderAll();
 }
 
-function toggleBlur(){blurred=!blurred;document.getElementById('hideBtn').textContent=blurred?'[ SHOW ]':'[ HIDE ]';renderAll();}
-document.getElementById('inpSym').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inpShares').focus();});
-document.getElementById('inpShares').addEventListener('keydown',e=>{if(e.key==='Enter')addHolding();});
-
-// ── Margin Debt ───────────────────────────────────────────────────────
-const MARGIN_KEY='pt_margin';
-var marginData={};
-
-function loadMargin(){
-  try{marginData=JSON.parse(localStorage.getItem(MARGIN_KEY)||'{}');}catch{marginData={};}
+// ── Adjustments ────────────────────────────────────────────────────────
+function toggleAdj(rowId, inputId, currentVal){
+  const row = document.getElementById(rowId);
+  const showing = row.style.display==='flex';
+  row.style.display = showing?'none':'flex';
+  if(!showing){ document.getElementById(inputId).value=currentVal>0?currentVal:''; document.getElementById(inputId).focus(); }
 }
-function saveMarginData(){localStorage.setItem(MARGIN_KEY,JSON.stringify(marginData));}
+function saveAdj2(key, inputId, rowId){
+  const val = parseFloat(document.getElementById(inputId).value)||0;
+  if(key==='margin') marginData[activeId]=val; else cashData[activeId]=val;
+  saveAdj();
+  document.getElementById(rowId).style.display='none';
+  renderAll();
+}
+function clearAdj2(key, inputId, rowId){
+  if(key==='margin') delete marginData[activeId]; else delete cashData[activeId];
+  saveAdj();
+  document.getElementById(inputId).value='';
+  document.getElementById(rowId).style.display='none';
+  renderAll();
+}
 
-function getMargin(pid){return parseFloat(marginData[pid]||0);}
-
-function toggleMarginEdit(){
-  const row=document.getElementById('marginEditRow');
-  const showing=row.style.display!=='none';
-  row.style.display=showing?'none':'flex';
-  if(!showing){
-    const cur=getMargin(activePortfolioId);
-    document.getElementById('marginInput').value=cur>0?cur:'';
-    document.getElementById('marginInput').focus();
+// ── Modal ──────────────────────────────────────────────────────────────
+function openModal(mode, pid){
+  modalMode=mode; modalTargetId=pid;
+  const p = portfolios.find(x=>x.id===pid);
+  document.getElementById('modalTitle').textContent = mode==='add'?'New Portfolio':'Rename Portfolio';
+  document.getElementById('modalInput').value = mode==='rename'&&p?p.name:'';
+  document.getElementById('modalDel').style.display = mode==='rename'&&portfolios.length>1?'block':'none';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('modalInput').focus(),50);
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+function confirmModal(){
+  const name = document.getElementById('modalInput').value.trim();
+  if(!name) return;
+  if(modalMode==='rename'&&modalTargetId){
+    const p = portfolios.find(x=>x.id===modalTargetId);
+    if(p){ p.name=name; saveMeta(); }
+  } else if(modalMode==='add'){
+    const id = 'p_'+Date.now();
+    portfolios.push({id,name});
+    saveMeta();
+    activeId=id;
   }
+  closeModal(); renderAll();
+}
+function deletePortfolio(){
+  if(portfolios.length<=1) return;
+  if(!confirm('Delete "'+portfolios.find(p=>p.id===modalTargetId)?.name+'"? All its holdings will be removed.')) return;
+  (allHoldings[modalTargetId]||[]).forEach(h=>dbDel(h.id));
+  delete allHoldings[modalTargetId];
+  portfolios = portfolios.filter(p=>p.id!==modalTargetId);
+  saveMeta();
+  activeId = portfolios[0].id;
+  closeModal(); renderAll();
 }
 
-function saveMargin(){
-  const val=parseFloat(document.getElementById('marginInput').value)||0;
-  marginData[activePortfolioId]=val;
-  saveMarginData();
-  document.getElementById('marginEditRow').style.display='none';
-  renderAll();
-}
-
-function clearMargin(){
-  delete marginData[activePortfolioId];
-  saveMarginData();
-  document.getElementById('marginInput').value='';
-  document.getElementById('marginEditRow').style.display='none';
-  renderAll();
-}
-
-// marginInput listener added in initApp
-
-// ── Cash / Savings ────────────────────────────────────────────────────
-const CASH_KEY='pt_cash';
-var cashData={};
-
-function loadCash(){
-  try{cashData=JSON.parse(localStorage.getItem(CASH_KEY)||'{}');}catch{cashData={};}
-}
-function saveCashData(){localStorage.setItem(CASH_KEY,JSON.stringify(cashData));}
-function getCash(pid){return parseFloat(cashData[pid]||0);}
-
-function toggleCashEdit(){
-  const row=document.getElementById('cashEditRow');
-  const showing=row.style.display!=='none';
-  row.style.display=showing?'none':'flex';
-  if(!showing){
-    const cur=getCash(activePortfolioId);
-    document.getElementById('cashInput').value=cur>0?cur:'';
-    document.getElementById('cashInput').focus();
-  }
-}
-function saveCash(){
-  const val=parseFloat(document.getElementById('cashInput').value)||0;
-  cashData[activePortfolioId]=val;
-  saveCashData();
-  document.getElementById('cashEditRow').style.display='none';
-  renderAll();
-}
-function clearCash(){
-  delete cashData[activePortfolioId];
-  saveCashData();
-  document.getElementById('cashInput').value='';
-  document.getElementById('cashEditRow').style.display='none';
-  renderAll();
-}
-// cashInput listener added in initApp
-
-function renderMargin(){
-  const margin=getMargin(activePortfolioId);
-  const cash=getCash(activePortfolioId);
-  const amtEl=document.getElementById('marginAmount');
-  const cashEl=document.getElementById('cashAmount');
+// ── Init ───────────────────────────────────────────────────────────────
+function wireEvents(){
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.getElementById('pwInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+  document.getElementById('hideBtn').addEventListener('click', ()=>{
+    blurred=!blurred;
+    document.getElementById('hideBtn').textContent=blurred?'[ SHOW ]':'[ HIDE ]';
+    renderAll();
+  });
+  document.getElementById('lockBtn').addEventListener('click', doLock);
+  document.getElementById('addBtn').addEventListener('click', addHolding);
+  document.getElementById('inpSym').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('inpShares').focus(); });
+  document.getElementById('inpShares').addEventListener('keydown', e=>{ if(e.key==='Enter') addHolding(); });
+  document.getElementById('refreshBtn').addEventListener('click', manualRefresh);
   // Margin
-  if(margin>0){
-    amtEl.textContent='-$'+margin.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    amtEl.className='margin-amount'+(blurred?' blurred-val':'');
-    amtEl.style.cssText='color:var(--red);font-size:20px;';
-  } else {
-    amtEl.textContent='None';
-    amtEl.className='margin-amount';
-    amtEl.style.cssText='color:var(--dim);font-size:14px;';
-  }
+  document.getElementById('marginEditBtn').addEventListener('click', ()=>toggleAdj('marginRow','marginInput',getMargin(activeId)));
+  document.getElementById('marginSave').addEventListener('click', ()=>saveAdj2('margin','marginInput','marginRow'));
+  document.getElementById('marginClear').addEventListener('click', ()=>clearAdj2('margin','marginInput','marginRow'));
+  document.getElementById('marginInput').addEventListener('keydown', e=>{ if(e.key==='Enter') saveAdj2('margin','marginInput','marginRow'); if(e.key==='Escape') document.getElementById('marginRow').style.display='none'; });
   // Cash
-  if(cash>0){
-    cashEl.textContent='+$'+cash.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    cashEl.className='cash-amount'+(blurred?' blurred-val':'');
-    cashEl.style.cssText='color:var(--green);font-size:20px;';
-  } else {
-    cashEl.textContent='None';
-    cashEl.className='cash-amount';
-    cashEl.style.cssText='color:var(--dim);font-size:14px;';
-  }
+  document.getElementById('cashEditBtn').addEventListener('click', ()=>toggleAdj('cashRow','cashInput',getCash(activeId)));
+  document.getElementById('cashSave').addEventListener('click', ()=>saveAdj2('cash','cashInput','cashRow'));
+  document.getElementById('cashClear').addEventListener('click', ()=>clearAdj2('cash','cashInput','cashRow'));
+  document.getElementById('cashInput').addEventListener('keydown', e=>{ if(e.key==='Enter') saveAdj2('cash','cashInput','cashRow'); if(e.key==='Escape') document.getElementById('cashRow').style.display='none'; });
+  // Modal
+  document.getElementById('modalOk').addEventListener('click', confirmModal);
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  document.getElementById('modalDel').addEventListener('click', deletePortfolio);
+  document.getElementById('modalInput').addEventListener('keydown', e=>{ if(e.key==='Enter') confirmModal(); if(e.key==='Escape') closeModal(); });
+  document.getElementById('modalOverlay').addEventListener('click', e=>{ if(e.target===document.getElementById('modalOverlay')) closeModal(); });
 }
 
-// ── Init ──────────────────────────────────────────────────────────────
 async function initApp(){
-  loadMargin();
-  loadCash();
-  document.getElementById('marginInput').addEventListener('keydown',e=>{
-    if(e.key==='Enter')saveMargin();
-    if(e.key==='Escape')document.getElementById('marginEditRow').style.display='none';
-  });
-  document.getElementById('cashInput').addEventListener('keydown',e=>{
-    if(e.key==='Enter')saveCash();
-    if(e.key==='Escape')document.getElementById('cashEditRow').style.display='none';
-  });
-  await loadPortfolios();
-  await loadAllHoldings();
-  await refreshAllPrices();
+  loadMeta();
+  loadAdj();
+  await dbLoad();
   renderAll();
-  // Only refresh prices when tab is visible, every 5 min
-  setInterval(async()=>{
-    if(!document.hidden){await refreshAllPrices();renderAll();}
-  },300000);
-  // Sync holdings every 60s, but only when visible
-  setInterval(async()=>{
-    if(!document.hidden){await loadAllHoldings();renderAll();}
-  },60000);
+  refreshPrices(false);
+  setInterval(()=>{ if(!document.hidden){ dbLoad().then(renderAll); } }, 60000);
+  setInterval(()=>{ if(!document.hidden){ refreshPrices(false).then(renderAll); } }, 300000);
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────
+wireEvents();
+if(sessionOk()){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appScreen').classList.add('visible');
+  initApp();
 }
 </script>
 </body>
