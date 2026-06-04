@@ -185,6 +185,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .margin-input:focus{border-color:var(--red);}
 .margin-save-btn{font-family:var(--mono);font-size:11px;background:rgba(255,77,106,0.1);border:1px solid rgba(255,77,106,0.4);color:var(--red);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
 .margin-clear-btn{font-family:var(--mono);font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:8px 14px;border-radius:6px;cursor:pointer;min-height:40px;}
+.cash-amount{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--green);}
 .loading-msg,.empty-state{font-family:var(--mono);font-size:12px;color:var(--dim);padding:24px 16px;text-align:center;}
 
 @media(max-width:640px){
@@ -278,7 +279,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   </div>
 
   <!-- Margin Debt (Trading tab only) -->
-  <div class="margin-section" id="marginSection" style="display:none">
+  <div class="margin-section" id="marginSection">
     <div class="margin-header">
       <div>
         <div class="margin-title">Margin Debt</div>
@@ -293,6 +294,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
       <input class="margin-input" id="marginInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal" />
       <button class="margin-save-btn" onclick="saveMargin()">Save</button>
       <button class="margin-clear-btn" onclick="clearMargin()">Clear</button>
+    </div>
+  </div>
+
+  <!-- Cash / Savings -->
+  <div class="margin-section" id="cashSection" style="border-color:rgba(0,212,170,0.25);margin-top:8px;">
+    <div class="margin-header">
+      <div>
+        <div class="margin-title" style="color:var(--green);">Cash / Savings</div>
+        <div class="margin-sub">Added to portfolio balance</div>
+      </div>
+      <div class="margin-right">
+        <span class="cash-amount" id="cashAmount">None</span>
+        <button class="margin-edit-btn" onclick="toggleCashEdit()">edit</button>
+      </div>
+    </div>
+    <div class="margin-edit-row" id="cashEditRow" style="display:none">
+      <input class="margin-input" id="cashInput" type="number" placeholder="0.00" min="0" step="0.01" inputmode="decimal" style="border-color:var(--border2);" />
+      <button class="margin-save-btn" style="background:rgba(0,212,170,0.1);border-color:var(--green2);color:var(--green);" onclick="saveCash()">Save</button>
+      <button class="margin-clear-btn" onclick="clearCash()">Clear</button>
     </div>
   </div>
 
@@ -404,7 +424,7 @@ function tabTotal(pid){
   const h=allHoldings[pid]||[];
   return h.reduce((s,h)=>{const p=prices[h.sym];return s+(p?p.price*h.shares:0);},0);
 }
-function tabNet(pid){return Math.max(0,tabTotal(pid)-getMargin(pid));}
+function tabNet(pid){return Math.max(0,tabTotal(pid)+getCash(pid)-getMargin(pid));}
 function combinedTotal(){return portfolios.reduce((s,p)=>s+tabNet(p.id),0);}
 
 // ── Tabs render ───────────────────────────────────────────────────────
@@ -557,7 +577,8 @@ function renderAll(){
   const holdings=currentHoldings();
   const gross=tabTotal(activePortfolioId);
   const margin=getMargin(activePortfolioId);
-  const total=Math.max(0,gross-margin);
+  const cash=getCash(activePortfolioId);
+  const total=Math.max(0,gross+cash-margin);
   const combined=combinedTotal();
   const activeName=portfolios.find(p=>p.id===activePortfolioId)?.name||'Portfolio';
 
@@ -573,7 +594,8 @@ function renderAll(){
   const combEl=document.getElementById('combinedBal');
   if(portfolios.length>1){
     const netCombined=portfolios.reduce((s,p)=>{
-      const g=tabTotal(p.id);const m=getMargin(p.id);return s+Math.max(0,g-m);
+      const g=tabTotal(p.id);const m=getMargin(p.id);const c=getCash(p.id);
+      return s+Math.max(0,g+c-m);
     },0);
     combEl.style.display='';
     combEl.textContent='All: $'+netCombined.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
@@ -712,28 +734,76 @@ document.getElementById('marginInput').addEventListener('keydown',e=>{
   if(e.key==='Escape'){document.getElementById('marginEditRow').style.display='none';}
 });
 
+// ── Cash / Savings ────────────────────────────────────────────────────
+const CASH_KEY='pt_cash';
+var cashData={};
+
+function loadCash(){
+  try{cashData=JSON.parse(localStorage.getItem(CASH_KEY)||'{}');}catch{cashData={};}
+}
+function saveCashData(){localStorage.setItem(CASH_KEY,JSON.stringify(cashData));}
+function getCash(pid){return parseFloat(cashData[pid]||0);}
+
+function toggleCashEdit(){
+  const row=document.getElementById('cashEditRow');
+  const showing=row.style.display!=='none';
+  row.style.display=showing?'none':'flex';
+  if(!showing){
+    const cur=getCash(activePortfolioId);
+    document.getElementById('cashInput').value=cur>0?cur:'';
+    document.getElementById('cashInput').focus();
+  }
+}
+function saveCash(){
+  const val=parseFloat(document.getElementById('cashInput').value)||0;
+  cashData[activePortfolioId]=val;
+  saveCashData();
+  document.getElementById('cashEditRow').style.display='none';
+  renderAll();
+}
+function clearCash(){
+  delete cashData[activePortfolioId];
+  saveCashData();
+  document.getElementById('cashInput').value='';
+  document.getElementById('cashEditRow').style.display='none';
+  renderAll();
+}
+document.getElementById('cashInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')saveCash();
+  if(e.key==='Escape'){document.getElementById('cashEditRow').style.display='none';}
+});
+
 function renderMargin(){
-  const isTrading=activePortfolioId==='trading'||portfolios.find(p=>p.id===activePortfolioId)?.name?.toLowerCase().includes('trading');
-  const section=document.getElementById('marginSection');
-  // Show margin section on ALL portfolios (user can choose to use it)
-  section.style.display='';
   const margin=getMargin(activePortfolioId);
+  const cash=getCash(activePortfolioId);
   const amtEl=document.getElementById('marginAmount');
+  const cashEl=document.getElementById('cashAmount');
+  // Margin
   if(margin>0){
     amtEl.textContent='-$'+margin.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
     amtEl.className='margin-amount'+(blurred?' blurred-val':'');
+    amtEl.style.cssText='color:var(--red);font-size:20px;';
   } else {
     amtEl.textContent='None';
     amtEl.className='margin-amount';
-    amtEl.style.color='var(--dim)';
-    amtEl.style.fontSize='14px';
+    amtEl.style.cssText='color:var(--dim);font-size:14px;';
   }
-  if(margin>0){amtEl.style.color='var(--red)';amtEl.style.fontSize='20px';}
+  // Cash
+  if(cash>0){
+    cashEl.textContent='+$'+cash.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    cashEl.className='cash-amount'+(blurred?' blurred-val':'');
+    cashEl.style.cssText='color:var(--green);font-size:20px;';
+  } else {
+    cashEl.textContent='None';
+    cashEl.className='cash-amount';
+    cashEl.style.cssText='color:var(--dim);font-size:14px;';
+  }
 }
 
 // ── Init ──────────────────────────────────────────────────────────────
 async function initApp(){
   loadMargin();
+  loadCash();
   await loadPortfolios();
   await loadAllHoldings();
   await refreshAllPrices();
