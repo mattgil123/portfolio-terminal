@@ -729,10 +729,7 @@ function clearMargin(){
   renderAll();
 }
 
-document.getElementById('marginInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter')saveMargin();
-  if(e.key==='Escape'){document.getElementById('marginEditRow').style.display='none';}
-});
+// marginInput listener added in initApp
 
 // ── Cash / Savings ────────────────────────────────────────────────────
 const CASH_KEY='pt_cash';
@@ -768,10 +765,7 @@ function clearCash(){
   document.getElementById('cashEditRow').style.display='none';
   renderAll();
 }
-document.getElementById('cashInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter')saveCash();
-  if(e.key==='Escape'){document.getElementById('cashEditRow').style.display='none';}
-});
+// cashInput listener added in initApp
 
 function renderMargin(){
   const margin=getMargin(activePortfolioId);
@@ -804,6 +798,14 @@ function renderMargin(){
 async function initApp(){
   loadMargin();
   loadCash();
+  document.getElementById('marginInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter')saveMargin();
+    if(e.key==='Escape')document.getElementById('marginEditRow').style.display='none';
+  });
+  document.getElementById('cashInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter')saveCash();
+    if(e.key==='Escape')document.getElementById('cashEditRow').style.display='none';
+  });
   await loadPortfolios();
   await loadAllHoldings();
   await refreshAllPrices();
